@@ -47,8 +47,7 @@ class Record(models.Model):
 
 class Player(models.Model):
     """
-    Player Model
-    This model links the info, sport, team and record
+    Player Model links the info, sport, team and record
     """
     info = models.ForeignKey(PlayerInfo, on_delete=models.CASCADE)
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
@@ -83,7 +82,7 @@ class MatchStats(models.Model):
 
 class Match(models.Model):
     """
-    Match model
+    Match model, base to date of match and check if the opponents are a team
     """
     date_time = models.DateTimeField()
     is_team = models.BooleanField(default=True)
@@ -98,7 +97,3 @@ class Match(models.Model):
 
     match_stats = models.ForeignKey(MatchStats, on_delete=models.CASCADE, null=True, blank=True)
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
-
-
-
-
