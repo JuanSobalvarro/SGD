@@ -10,12 +10,18 @@ class PlayerInfo(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
 
+    def __str__(self) -> str:
+        return f"{self.name} {self.email}"
+
 
 class Sport(models.Model):
     """
     Sport base model
     """
     name = models.CharField(max_length=50)
+
+    def __str__(self) -> str:
+        return f"{self.name}"
 
 
 class TeamStats(models.Model):
@@ -34,6 +40,9 @@ class Team(models.Model):
     name = models.CharField(max_length=100)
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
     stats = models.ForeignKey(TeamStats, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"{self.name}"
 
 
 class Record(models.Model):
@@ -54,6 +63,9 @@ class Player(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     record = models.ForeignKey(Record, on_delete=models.CASCADE)
 
+    def __str__(self) -> str:
+        return f"{self.info.name} {self.sport.name} {self.team.name}"
+
 
 class Tournament(models.Model):
     """
@@ -63,6 +75,9 @@ class Tournament(models.Model):
     date = models.DateTimeField()
     active = models.BooleanField(default=True)
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"{self.name}"
 
 
 class MatchTeamStats(models.Model):
@@ -76,8 +91,8 @@ class MatchStats(models.Model):
     """
     Match stats model, the base collects stats of each team, then you should make an instance of this model
     """
-    team_1_stats = models.ForeignKey(TeamStats, on_delete=models.CASCADE)
-    team_2_stats = models.ForeignKey(TeamStats, on_delete=models.CASCADE)
+    team_1_stats = models.ForeignKey(MatchTeamStats, on_delete=models.CASCADE)
+    team_2_stats = models.ForeignKey(MatchTeamStats, on_delete=models.CASCADE)
 
 
 class Match(models.Model):
@@ -97,3 +112,6 @@ class Match(models.Model):
 
     match_stats = models.ForeignKey(MatchStats, on_delete=models.CASCADE, null=True, blank=True)
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"{self.tournament.name} {self.team_1.name} {self.team_2.name} {self.date_time}"
