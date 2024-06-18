@@ -10,6 +10,9 @@ class PlayerInfo(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
 
+    class Meta:
+        abstract = True
+
     def __str__(self) -> str:
         return f"{self.name} {self.email}"
 
@@ -19,6 +22,9 @@ class Sport(models.Model):
     Sport base model
     """
     name = models.CharField(max_length=50)
+
+    class Meta:
+        abstract = True
 
     def __str__(self) -> str:
         return f"{self.name}"
@@ -32,6 +38,9 @@ class TeamStats(models.Model):
     losses = models.IntegerField(default=0)
     draws = models.IntegerField(default=0)
 
+    class Meta:
+        abstract = True
+
 
 class Team(models.Model):
     """
@@ -40,6 +49,9 @@ class Team(models.Model):
     name = models.CharField(max_length=100)
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
     stats = models.ForeignKey(TeamStats, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
 
     def __str__(self) -> str:
         return f"{self.name}"
@@ -53,6 +65,9 @@ class Record(models.Model):
     losses = models.IntegerField(default=0)
     draws = models.IntegerField(default=0)
 
+    class Meta:
+        abstract = True
+
 
 class Player(models.Model):
     """
@@ -62,6 +77,9 @@ class Player(models.Model):
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     record = models.ForeignKey(Record, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
 
     def __str__(self) -> str:
         return f"{self.info.name} {self.sport.name} {self.team.name}"
@@ -76,6 +94,9 @@ class Tournament(models.Model):
     active = models.BooleanField(default=True)
     sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
 
+    class Meta:
+        abstract = True
+
     def __str__(self) -> str:
         return f"{self.name}"
 
@@ -86,6 +107,9 @@ class MatchTeamStats(models.Model):
     """
     winner = models.BooleanField(default=False)
 
+    class Meta:
+        abstract = True
+
 
 class MatchStats(models.Model):
     """
@@ -93,6 +117,9 @@ class MatchStats(models.Model):
     """
     team_1_stats = models.ForeignKey(MatchTeamStats, on_delete=models.CASCADE)
     team_2_stats = models.ForeignKey(MatchTeamStats, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
 
 
 class Match(models.Model):
@@ -113,5 +140,20 @@ class Match(models.Model):
     match_stats = models.ForeignKey(MatchStats, on_delete=models.CASCADE, null=True, blank=True)
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
 
+    class Meta:
+        abstract = True
+
     def __str__(self) -> str:
         return f"{self.tournament.name} {self.team_1.name} {self.team_2.name} {self.date_time}"
+
+
+class News(models.Model):
+    """
+    News model so the Gestor of our site could create News
+    """
+    image_route = models.ImageField(upload_to="static/images/")
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+
+    class Meta:
+        abstract = True
