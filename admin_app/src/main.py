@@ -1,19 +1,16 @@
 import ttkbootstrap as ttk
-from ttkbootstrap import *
+from ttkbootstrap.constants import *
+from ttkbootstrap.dialogs.dialogs import Messagebox
 
-STYLE_NAME = 'winnative'
+THEME_NAME = 'superhero'
 
-class App(tk.Tk):
+class App(ttk.Window):
 
     def __init__(self):
-        super().__init__()
+        super().__init__(themename=THEME_NAME)
         self.geometry('1280x720')
-        self.title('SGD Admin App')
+        self.title('Sistema de Gestion Deportiva | ULSA | Administracion')
         self.resizable(False, False)
-
-        # style initialize
-        self.style = ttk.Style()
-        self.style.theme_use('classic')
 
         self.current_user = None
         self.sport = None
@@ -45,7 +42,8 @@ class App(tk.Tk):
             self.current_user = username
             self.show_sport_selection()
         else:
-            tk.messagebox.showerror("Error", "Usuario o contraseña incorrectos")
+            Messagebox.show_error('Usuario o contraseña incorrectos', alert=True)
+
 
     def show_sport_selection(self):
         self.clear_screen()
