@@ -5,8 +5,8 @@ Sistema de Gestion para los deportes de **Universidad Tecnologica La Salle - ULS
 Desarrollado en Python 3.12 utilizando el framework de [Django 5.0](https://www.djangoproject.com)
 
 <div align="center">
-  <img src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/files/python-logo-only.svg" alt="Python Logo">
-  <img src="https://static.djangoproject.com/img/logos/django-logo-negative.svg" alt="Django Logo">
+  <img src="https://s3.dualstack.us-east-2.amazonaws.com/pythondotorg-assets/media/files/python-logo-only.svg" alt="Python Logo" width="200">
+  <img src="https://static.djangoproject.com/img/logos/django-logo-negative.svg" alt="Django Logo" width="200">
 </div>
 
 ## Desarrolladores
