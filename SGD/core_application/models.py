@@ -67,7 +67,7 @@ class Player(models.Model):
         abstract = True
 
     def __str__(self) -> str:
-        return f"{self.info.name} {self.team.name}"
+        return f"{self.info.name}"
 
 
 class Tournament(models.Model):
@@ -97,7 +97,7 @@ class MatchTeamStats(models.Model):
 
 class MatchStats(models.Model):
     """
-    Match stats model, the base collects stats of each team, then you should make an instance of this model
+    Match stats model, the base collects stats of each team
     """
     team_1_stats = models.ForeignKey(MatchTeamStats, on_delete=models.CASCADE)
     team_2_stats = models.ForeignKey(MatchTeamStats, on_delete=models.CASCADE)
