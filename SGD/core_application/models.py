@@ -17,19 +17,6 @@ class PlayerInfo(models.Model):
         return f"{self.name} {self.email}"
 
 
-class Sport(models.Model):
-    """
-    Sport base model
-    """
-    name = models.CharField(max_length=50)
-
-    class Meta:
-        abstract = True
-
-    def __str__(self) -> str:
-        return f"{self.name}"
-
-
 class TeamStats(models.Model):
     """
     Collects stats about a team
@@ -47,7 +34,6 @@ class Team(models.Model):
     Team model that collects the base data of a team
     """
     name = models.CharField(max_length=100)
-    sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
     stats = models.ForeignKey(TeamStats, on_delete=models.CASCADE)
 
     class Meta:
@@ -74,7 +60,6 @@ class Player(models.Model):
     Player Model links the info, sport, team and record
     """
     info = models.ForeignKey(PlayerInfo, on_delete=models.CASCADE)
-    sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     record = models.ForeignKey(Record, on_delete=models.CASCADE)
 
@@ -82,7 +67,7 @@ class Player(models.Model):
         abstract = True
 
     def __str__(self) -> str:
-        return f"{self.info.name} {self.sport.name} {self.team.name}"
+        return f"{self.info.name} {self.team.name}"
 
 
 class Tournament(models.Model):
@@ -92,7 +77,6 @@ class Tournament(models.Model):
     name = models.CharField(max_length=100)
     date = models.DateTimeField()
     active = models.BooleanField(default=True)
-    sport = models.ForeignKey(Sport, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
