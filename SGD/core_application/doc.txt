@@ -1,0 +1,160 @@
+Introduction
+This documentation provides an overview of how to implement and use the core models provided by the core_application library. These models are designed to be inherited and extended to create specific implementations for different sports.
+
+Models in core_application
+The core_application contains the following abstract base models:
+
+PlayerInfo
+Sport
+TeamStats
+Team
+Record
+Player
+Tournament
+MatchTeamStats
+MatchStats
+Match
+News
+Creating Specific Implementations for a Sport
+To create specific models for a sport, you need to inherit from the abstract base models provided by the core_application.
+
+Example: Football Models
+Create a new Django app for the sport, e.g., football_application.
+
+Define the models in football_application/models.py:
+
+from django.db import models
+from core_application.models import PlayerInfo, Sport, TeamStats, Team, Record, Player, Tournament, MatchTeamStats, MatchStats, Match, News
+
+class FootballPlayerInfo(PlayerInfo):
+    """
+    Information specific to a football player.
+    """
+    position = models.CharField(max_length=50)
+
+class FootballSport(Sport):
+    """
+    Specific sport: Football
+    """
+    pass
+
+class FootballTeamStats(TeamStats):
+    """
+    Statistics specific to a football team.
+    """
+    goals_scored = models.IntegerField(default=0)
+    goals_conceded = models.IntegerField(default=0)
+
+class FootballTeam(Team):
+    """
+    Specific football team.
+    """
+    pass
+
+class FootballRecord(Record):
+    """
+    Record specific to a football player.
+    """
+    goals = models.IntegerField(default=0)
+    assists = models.IntegerField(default=0)
+
+class FootballPlayer(Player):
+    """
+    Specific football player.
+    """
+    pass
+
+class FootballTournament(Tournament):
+    """
+    Specific football tournament.
+    """
+    pass
+
+class FootballMatchTeamStats(MatchTeamStats):
+    """
+    Team stats for a football match.
+    """
+    pass
+
+class FootballMatchStats(MatchStats):
+    """
+    Match stats for a football match.
+    """
+    pass
+
+class FootballMatch(Match):
+    """
+    Specific football match.
+    """
+    pass
+
+class FootballNews(News):
+    """
+    Specific news for football.
+    """
+    pass
+Creating Instances of Models
+To create instances of the models, follow these steps:
+
+Set up the Django environment:
+
+python manage.py makemigrations football_application
+python manage.py migrate
+
+
+Create instances in Django shell or views:
+
+# Open Django shell
+python manage.py shell
+
+# Import the models
+from football_application.models import (
+    FootballPlayerInfo, FootballSport, FootballTeamStats, FootballTeam,
+    FootballRecord, FootballPlayer, FootballTournament, FootballMatchTeamStats,
+    FootballMatchStats, FootballMatch, FootballNews
+)
+
+# Create a sport
+football = FootballSport.objects.create(name="Football")
+
+# Create player info
+player_info = FootballPlayerInfo.objects.create(name="Lionel Messi", email="messi@example.com", position="Forward")
+
+# Create team stats
+team_stats = FootballTeamStats.objects.create(wins=20, losses=5, draws=10, goals_scored=60, goals_conceded=30)
+
+# Create a team
+team = FootballTeam.objects.create(name="FC Barcelona", sport=football, stats=team_stats)
+
+# Create a player record
+record = FootballRecord.objects.create(wins=20, losses=5, draws=10, goals=50, assists=30)
+
+# Create a player
+player = FootballPlayer.objects.create(info=player_info, sport=football, team=team, record=record)
+
+# Create a tournament
+tournament = FootballTournament.objects.create(name="Champions League", date="2024-06-01", active=True, sport=football)
+
+# Create match team stats
+team_1_stats = FootballMatchTeamStats.objects.create(winner=True)
+team_2_stats = FootballMatchTeamStats.objects.create(winner=False)
+
+# Create match stats
+match_stats = FootballMatchStats.objects.create(team_1_stats=team_1_stats, team_2_stats=team_2_stats)
+
+# Create a match
+match = FootballMatch.objects.create(
+    date_time="2024-06-15 20:00:00",
+    is_team=True,
+    content_type_team_1=ContentType.objects.get_for_model(FootballTeam),
+    object_id_team_1=team.id,
+    content_type_team_2=ContentType.objects.get_for_model(FootballTeam),
+    object_id_team_2=another_team.id,
+    match_stats=match_stats,
+    tournament=tournament
+)
+
+# Create a news item
+news = FootballNews.objects.create(image_route="path/to/image.jpg", title="FC Barcelona Wins", description="FC Barcelona wins the match 3-0")
+
+For more details, refer to the Django documentation on abstract base classes.
