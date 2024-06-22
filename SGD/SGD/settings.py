@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'core_application',
-    'sports.tableTennis.apps',
+    'sports.tableTennis.apps.TableTennisConfig',
 ]
 
 MIDDLEWARE = [
