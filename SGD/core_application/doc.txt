@@ -15,7 +15,9 @@ MatchTeamStats
 MatchStats
 Match
 News
+
 Creating Specific Implementations for a Sport
+
 To create specific models for a sport, you need to inherit from the abstract base models provided by the core_application.
 
 Example: Football Models
@@ -38,62 +40,10 @@ class FootballSport(Sport):
     """
     pass
 
-class FootballTeamStats(TeamStats):
-    """
-    Statistics specific to a football team.
-    """
-    goals_scored = models.IntegerField(default=0)
-    goals_conceded = models.IntegerField(default=0)
+...
 
-class FootballTeam(Team):
-    """
-    Specific football team.
-    """
-    pass
-
-class FootballRecord(Record):
-    """
-    Record specific to a football player.
-    """
-    goals = models.IntegerField(default=0)
-    assists = models.IntegerField(default=0)
-
-class FootballPlayer(Player):
-    """
-    Specific football player.
-    """
-    pass
-
-class FootballTournament(Tournament):
-    """
-    Specific football tournament.
-    """
-    pass
-
-class FootballMatchTeamStats(MatchTeamStats):
-    """
-    Team stats for a football match.
-    """
-    pass
-
-class FootballMatchStats(MatchStats):
-    """
-    Match stats for a football match.
-    """
-    pass
-
-class FootballMatch(Match):
-    """
-    Specific football match.
-    """
-    pass
-
-class FootballNews(News):
-    """
-    Specific news for football.
-    """
-    pass
 Creating Instances of Models
+
 To create instances of the models, follow these steps:
 
 Set up the Django environment:
