@@ -2,7 +2,10 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from core_application import models as core_models
+try:
+    from core_application import models as core_models
+except ImportError:
+    from ...core_application import models as core_models
 
 
 class PlayerInfo(core_models.PlayerInfo):
@@ -22,6 +25,12 @@ class Record(core_models.Record):
 
 
 class Player(core_models.Player):
+    """
+    Table Tennis Player model
+
+    :param info: PlayerInfo
+    :param record: Record
+    """
     info = models.ForeignKey(PlayerInfo, on_delete=models.CASCADE)
     record = models.ForeignKey(Record, on_delete=models.CASCADE)
     team = None
