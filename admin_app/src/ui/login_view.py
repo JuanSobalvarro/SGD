@@ -83,11 +83,16 @@ class LoginView(BaseView):
                                      border_color=self.border_color,
                                      fg_color='#FFFFFF')
         usernameFrame.grid(row=2, column=0, sticky='nsew', padx=10)
+
+        usernameFrame.grid_columnconfigure(0, weight=1)
+
         passwordFrame = ctk.CTkFrame(self.formFrame,
                                      border_width=self.border_width,
                                      border_color=self.border_color,
                                      fg_color='#FFFFFF')
         passwordFrame.grid(row=3, column=0, sticky='nsew', padx=10)
+
+        passwordFrame.grid_columnconfigure(0, weight=1)
 
         # Username label and entry
         usernameLabel = ctk.CTkLabel(usernameFrame,
