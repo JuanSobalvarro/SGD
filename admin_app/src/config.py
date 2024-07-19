@@ -11,5 +11,6 @@ class Config(object):
     APP_THEME_PATH = os.path.join(os.path.dirname(__file__), "themes\\white.json")
     APP_MIN_WIDTH = 970
     APP_MIN_HEIGHT = 460
+    APP_SPORTS_AVAILABLE = ["Tenis de Mesa", "Fútbol"]
     COLOR_GREEN = "#238937"
-    DEBUG = False
+    DEBUG = True

@@ -4,6 +4,7 @@ from ..config import Config
 from ..utils.debug import debug_print
 from .login_view import LoginView
 from .sport_selection_view import SportSelectionView
+from .homepage_view import HomepageView
 from .base_view import BaseView
 
 
@@ -35,12 +36,12 @@ class App(ctk.CTk):
 
         #self.bind('<Configure>', self._resize)
 
-        self.show_frame("LoginView")
+        self.show_frame("HomepageView")
 
     def create_frames(self):
         self.setUp()
 
-        for F in (LoginView, SportSelectionView):
+        for F in (LoginView, SportSelectionView, HomepageView):
             page_name = F.__name__
             frame = F(parent=self.viewsContainer, app=self)  # Pass the controller (self) to each view
             self.frames[page_name] = frame
