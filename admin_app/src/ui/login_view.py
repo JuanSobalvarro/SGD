@@ -133,7 +133,7 @@ class LoginView(BaseView):
         self.imageFrame.grid_propagate(False)  # Disable size propagatioon
 
         # Load and display image
-        image_path = os.path.join(os.path.dirname(__file__), '../../images/login_logo.png')  # Adjust the path as needed
+        image_path = os.path.join(Config.APP_IMAGES_PATH, "login_logo.png")  # Adjust the path as needed
         self.image = Image.open(image_path)
         self.img_copy = self.image.copy()
         # print(self.image, self.img_copy)
