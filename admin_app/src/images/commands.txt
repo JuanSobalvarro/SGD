@@ -1,0 +1,2 @@
+Rename Files: Get-ChildItem -Filter "xxxx*.png" | Rename-Item -NewName {$_.Name -replace 'xxxx', ''}
+Where xxxx is the word you want to replace at the beginning of the filename

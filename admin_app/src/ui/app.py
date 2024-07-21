@@ -14,12 +14,12 @@ class App(ctk.CTk):
         self.title(Config.APP_TITLE)
         self.geometry(Config.APP_GEOMETRY)
         self.minsize(Config.APP_MIN_WIDTH, Config.APP_MIN_HEIGHT)
-        self.appearance_mode = 'light'
+
 
         self.viewsContainer: BaseView = None
         self.statusBar: ctk.CTkFrame = None
 
-        ctk.set_appearance_mode(self.appearance_mode)
+        ctk.set_appearance_mode(Config.current_theme)
         ctk.set_default_color_theme(Config.APP_THEME_PATH)
 
         self.border_width: int = None
@@ -55,7 +55,6 @@ class App(ctk.CTk):
 
         # create Status Bar
         self.statusBar = ctk.CTkFrame(self,
-                                      fg_color="#EAEAEA",
                                       height=30)
         self.statusBar.grid(row=1, column=0, sticky='nsew')
         self.statusBar.grid_propagate(False)
