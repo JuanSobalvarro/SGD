@@ -27,6 +27,7 @@ class BaseView(ctk.CTkFrame):
         and destroy all the widgets inside the view to add
         new ones.
         """
-        self.pack_forget()
         for widget in self.mainFrame.winfo_children():
             widget.destroy()
+        self.mainFrame.destroy()
+        self.pack_forget()

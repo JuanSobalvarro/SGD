@@ -1,8 +1,18 @@
+# src/ui/widgets/navigationBar.py
 import customtkinter as ctk
 from ...config import Config
 from ...utils.debug import debug_print
 from PIL import Image
-from typing import Literal
+from typing import Literal, Callable
+
+
+class ButtonCommand:
+    """
+    Class to helpers functions about button commands
+    """
+    @staticmethod
+    def set_command(button: ctk.CTkButton, functionCallback: Callable):
+        button.configure(command=functionCallback)
 
 
 class NavigationBar(ctk.CTkFrame):
@@ -16,6 +26,16 @@ class NavigationBar(ctk.CTkFrame):
         self._border_width: int = None
 
         self.__borderProperties("#123456", 1)
+
+        # buttons
+        self.homeButton: ctk.CTkButton = None
+        self.playersButton: ctk.CTkButton = None
+        self.teamsButton: ctk.CTkButton = None
+        self.eventsButton: ctk.CTkButton = None
+        self.leaderboardButton: ctk.CTkButton = None
+        self.lightModeButton: ctk.CTkButton = None
+        self.darkModeButton: ctk.CTkButton = None
+        self.logoutButton: ctk.CTkButton = None
 
         self._createNavBar()
 
@@ -35,7 +55,7 @@ class NavigationBar(ctk.CTkFrame):
         self.navBar.pack_propagate(False)
 
         # Add buttons or other widgets to the menu bar
-        self._createMenuButtons()
+        self._createNavButtons()
 
     def _createImages(self):
         self.home_image = ctk.CTkImage(light_image=Image.open(Config.APP_IMAGES_PATH+'navBar/light/home-96.png'),
@@ -64,7 +84,7 @@ class NavigationBar(ctk.CTkFrame):
                                          dark_image=Image.open(Config.APP_IMAGES_PATH+"navBar/dark/logout-90.png"),
                                          size=(48, 48))
 
-    def _createMenuButtons(self):
+    def _createNavButtons(self):
         self._createImages()
 
         font = (Config.CUSTOM_FONTS_PATH+"Product-Sans-Regular.ttf", Config.MENUBAR_FONTSIZE, "bold")
@@ -95,13 +115,13 @@ class NavigationBar(ctk.CTkFrame):
                                          image=self.teams_image)
         self.teamsButton.pack(pady=10, padx=10, fill='x')
 
-        self.eventButton = ctk.CTkButton(self.navBar,
-                                         text="Eventos",
-                                         font=("Helvetica", Config.MENUBAR_FONTSIZE),
-                                         text_color=("#000000", "#FFFFFF"),
-                                         fg_color="transparent",
-                                         image=self.event_image)
-        self.eventButton.pack(pady=10, padx=10, fill='x')
+        self.eventsButton = ctk.CTkButton(self.navBar,
+                                          text="Eventos",
+                                          font=("Helvetica", Config.MENUBAR_FONTSIZE),
+                                          text_color=("#000000", "#FFFFFF"),
+                                          fg_color="transparent",
+                                          image=self.event_image)
+        self.eventsButton.pack(pady=10, padx=10, fill='x')
 
         self.leaderboardButton = ctk.CTkButton(self.navBar,
                                                text="Clasificación",

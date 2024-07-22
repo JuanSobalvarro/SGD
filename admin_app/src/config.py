@@ -18,7 +18,7 @@ class Config(object):
 
     MENUBAR_FONTSIZE = 16
     COLOR_GREEN = "#238937"
-    current_theme = "light"
+    current_theme = "dark"
 
     # Load custom font
     CUSTOM_FONTS_PATH = os.path.join(os.path.dirname(__file__), "fonts", "")

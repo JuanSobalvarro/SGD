@@ -76,7 +76,7 @@ class LoginView(BaseView):
                                         anchor="nw",
                                         justify=ctk.LEFT,
                                         text_color=("#2C2C2C", "#FFFFFF"))
-        descriptionLabel.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+        descriptionLabel.grid(row=1, column=0, sticky="nsew", padx=10)
 
         # Username frame
         usernameFrame = ctk.CTkFrame(self.formFrame,
@@ -164,7 +164,7 @@ class LoginView(BaseView):
         if self.auth_service.authenticate(username, password):
             self.user = User(username)
             self.user.authenticate()
-            self.app.show_frame("SportSelectionView")
+            self.app.showView("ContentView")
         else:
             error_label = ctk.CTkLabel(self, text="Invalid credentials, try again.", text_color='#FF0000')
             error_label.grid(row=3, column=0, columnspan=2, pady=5)

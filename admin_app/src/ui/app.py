@@ -1,7 +1,9 @@
 # src/ui/app.py
 import customtkinter as ctk
 from ..config import Config
-from ..utils.debug import debug_print
+from ..utils.debug import debug_print, debug_print_widget_hierarchy
+
+# Import views
 from .views.login_view import LoginView
 from .views.sport_selection_view import SportSelectionView
 from .views.content_view import ContentView
@@ -25,9 +27,11 @@ class App(ctk.CTk):
         self.border_color: str = None
         self.__borderProperties("#00FF00", 1)
 
-        self.currentFrame: BaseView = None
-        self.frames: dict[str, BaseView] = {}
-        self.create_frames()
+        self._views_classes = [LoginView, SportSelectionView, ContentView]
+
+        self.current_view: BaseView = None
+        self.views: dict[str, BaseView] = {}
+        self.createViews()
 
         # Make the main frame fill the entire window
         self.grid_rowconfigure(0, weight=1)
@@ -35,13 +39,13 @@ class App(ctk.CTk):
 
         #self.bind('<Configure>', self._resize)
 
-    def create_frames(self):
+    def createViews(self):
         self.setUp()
 
-        for F in (LoginView, SportSelectionView, ContentView):
+        for F in self._views_classes:
             page_name = F.__name__
             frame = F(parent=self.viewsContainer, app=self)  # Pass the controller (self) to each view
-            self.frames[page_name] = frame
+            self.views[page_name] = frame
 
     def setUp(self):
         # create ViewsContainer
@@ -56,18 +60,18 @@ class App(ctk.CTk):
         self.statusBar.grid(row=1, column=0, sticky='nsew')
         self.statusBar.grid_propagate(False)
 
-    def show_frame(self, frame_name: str):
+    def showView(self, frame_name: str):
         debug_print(f"Showing frame {frame_name}")
 
         # If there is a frame unshowit
-        if self.currentFrame is not None:
-            self.currentFrame.unShowView()
+        if self.current_view is not None:
+            self.current_view.unShowView()
 
-        self.currentFrame = self.frames[frame_name]
+        self.current_view = self.views[frame_name]
 
-        self.currentFrame.showView()
-        self.currentFrame.tkraise()
-        self.currentFrame.pack(fill="both", expand=True)
+        self.current_view.showView()
+        self.current_view.tkraise()
+        self.current_view.pack(fill="both", expand=True)
 
     def _resize(self, event=None):
         if event:
@@ -91,5 +95,6 @@ class App(ctk.CTk):
         ctk.set_appearance_mode(new_theme)
 
     def run(self):
-        self.show_frame("ContentView")
+        self.showView("ContentView")
+        debug_print_widget_hierarchy(self)
         self.mainloop()
