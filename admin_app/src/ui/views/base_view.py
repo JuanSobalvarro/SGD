@@ -1,5 +1,6 @@
+# src/ui/views/base_view.py
 import customtkinter as ctk
-from ..config import Config
+from ...config import Config
 
 
 class BaseView(ctk.CTkFrame):
@@ -9,13 +10,23 @@ class BaseView(ctk.CTkFrame):
 
         self.mainFrame: ctk.CTkFrame = None
 
-        if Config.DEBUG:
-            self._border_width = 1
-
     def borderProperties(self, color: str, width: int):
         # Set border properties for debugging
         self.border_color = color if Config.DEBUG else None
         self.border_width = width if Config.DEBUG else 0
 
     def showView(self):
+        """
+        Function to be overridden by subclasses.
+        """
         pass
+
+    def unShowView(self):
+        """
+        To unshow the view it should forget the pack of itself,
+        and destroy all the widgets inside the view to add
+        new ones.
+        """
+        self.pack_forget()
+        for widget in self.mainFrame.winfo_children():
+            widget.destroy()

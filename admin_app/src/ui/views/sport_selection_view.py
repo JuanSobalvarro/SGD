@@ -1,6 +1,6 @@
 # src/ui/sport_selection_view.py
 import customtkinter as ctk
-from ..config import Config
+from ...config import Config
 from .base_view import BaseView
 
 

@@ -1,11 +1,11 @@
-# src/ui/login_view.py
+# src/ui/views/login_view.py
 import customtkinter as ctk
 from PIL import Image
-from ..auth.authentication import AuthService
-from ..auth.user import User
+from ...auth.authentication import AuthService
+from ...auth.user import User
 from .base_view import BaseView
-from ..utils.debug import debug_print
-from ..config import Config
+from ...utils.debug import debug_print
+from ...config import Config
 import os
 
 
@@ -31,7 +31,7 @@ class LoginView(BaseView):
     def create_widgets(self):
         # Main frame to hold all widgets
         self.mainFrame = ctk.CTkFrame(self,
-                                      fg_color=('#FFFFFF', "#888888"),
+                                      fg_color=("#FFFFFF", "#3A3A3A"),
                                       corner_radius=36,
                                       border_width=self.border_width,
                                       border_color=self.border_color)
@@ -48,13 +48,14 @@ class LoginView(BaseView):
     def createFormFrame(self):
         # Left side frame for form
         self.formFrame = ctk.CTkFrame(self.mainFrame,
+                                      fg_color=("#FFFFFF", "#3A3A3A"),
                                       border_width=self.border_width,
                                       border_color=self.border_color)
         self.formFrame.grid(row=0, column=0, padx=10, pady=10, sticky='nsew')
         self.formFrame.grid_propagate(False)  # Disable size propagatioon
 
         self.welcomeFrame = ctk.CTkFrame(self.formFrame,
-                                         fg_color=('#FFFFFF', "#888888"),
+                                         fg_color=("#FFFFFF", "#3A3A3A"),
                                          border_width=self.border_width,
                                          border_color=self.border_color)
         self.welcomeFrame.grid(row=0, column=0, padx=10, pady=10, sticky='nsew')
@@ -74,22 +75,22 @@ class LoginView(BaseView):
                                         font=("Inter", 16),
                                         anchor="nw",
                                         justify=ctk.LEFT,
-                                        text_color="#2C2C2C")
+                                        text_color=("#2C2C2C", "#FFFFFF"))
         descriptionLabel.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
 
         # Username frame
         usernameFrame = ctk.CTkFrame(self.formFrame,
+                                     fg_color=("#FFFFFF", "#3A3A3A"),
                                      border_width=self.border_width,
-                                     border_color=self.border_color,
-                                     fg_color='#FFFFFF')
+                                     border_color=self.border_color,)
         usernameFrame.grid(row=2, column=0, sticky='nsew', padx=10)
 
         usernameFrame.grid_columnconfigure(0, weight=1)
 
         passwordFrame = ctk.CTkFrame(self.formFrame,
+                                     fg_color=("#FFFFFF", "#3A3A3A"),
                                      border_width=self.border_width,
-                                     border_color=self.border_color,
-                                     fg_color='#FFFFFF')
+                                     border_color=self.border_color,)
         passwordFrame.grid(row=3, column=0, sticky='nsew', padx=10)
 
         passwordFrame.grid_columnconfigure(0, weight=1)
@@ -126,6 +127,7 @@ class LoginView(BaseView):
     def createImageFrame(self):
         # Right side frame for image
         self.imageFrame = ctk.CTkFrame(self.mainFrame,
+                                       fg_color=("#FFFFFF", "#3A3A3A"),
                                        border_width=self.border_width,
                                        border_color=self.border_color
                                        )
@@ -143,9 +145,6 @@ class LoginView(BaseView):
         self.imageLabel.grid(row=0, column=0, padx=10, pady=10, sticky='nsew')
         # self._resize_image(None)  # Initially resize the image
         #self.imageFrame.bind('<Configure>', self._resize_image)
-
-    def showView(self):
-       self.create_widgets()
 
     def _resize_image(self, event):
         if self.imageLabel:
@@ -169,3 +168,6 @@ class LoginView(BaseView):
         else:
             error_label = ctk.CTkLabel(self, text="Invalid credentials, try again.", text_color='#FF0000')
             error_label.grid(row=3, column=0, columnspan=2, pady=5)
+
+    def showView(self):
+        self.create_widgets()

@@ -2,10 +2,10 @@
 import customtkinter as ctk
 from ..config import Config
 from ..utils.debug import debug_print
-from .login_view import LoginView
-from .sport_selection_view import SportSelectionView
-from .homepage_view import HomepageView
-from .base_view import BaseView
+from .views.login_view import LoginView
+from .views.sport_selection_view import SportSelectionView
+from .views.content_view import ContentView
+from .views.base_view import BaseView
 
 
 class App(ctk.CTk):
@@ -14,7 +14,6 @@ class App(ctk.CTk):
         self.title(Config.APP_TITLE)
         self.geometry(Config.APP_GEOMETRY)
         self.minsize(Config.APP_MIN_WIDTH, Config.APP_MIN_HEIGHT)
-
 
         self.viewsContainer: BaseView = None
         self.statusBar: ctk.CTkFrame = None
@@ -36,12 +35,10 @@ class App(ctk.CTk):
 
         #self.bind('<Configure>', self._resize)
 
-        self.show_frame("HomepageView")
-
     def create_frames(self):
         self.setUp()
 
-        for F in (LoginView, SportSelectionView, HomepageView):
+        for F in (LoginView, SportSelectionView, ContentView):
             page_name = F.__name__
             frame = F(parent=self.viewsContainer, app=self)  # Pass the controller (self) to each view
             self.frames[page_name] = frame
@@ -59,13 +56,14 @@ class App(ctk.CTk):
         self.statusBar.grid(row=1, column=0, sticky='nsew')
         self.statusBar.grid_propagate(False)
 
-    def show_frame(self, page_name):
-        debug_print(f"Showing frame {page_name}")
+    def show_frame(self, frame_name: str):
+        debug_print(f"Showing frame {frame_name}")
 
+        # If there is a frame unshowit
         if self.currentFrame is not None:
-            self.currentFrame.pack_forget()
+            self.currentFrame.unShowView()
 
-        self.currentFrame = self.frames[page_name]
+        self.currentFrame = self.frames[frame_name]
 
         self.currentFrame.showView()
         self.currentFrame.tkraise()
@@ -80,5 +78,18 @@ class App(ctk.CTk):
         self.border_color = color if Config.DEBUG else None
         self.border_width = width if Config.DEBUG else 0
 
+    @staticmethod
+    def toggle_theme(new_theme: str):
+        if new_theme not in ["light", "dark"]:
+            debug_print("ROSSMAN USA LIGHT O DARK")
+            return
+
+        if Config.current_theme == new_theme:
+            return
+
+        Config.current_theme = new_theme
+        ctk.set_appearance_mode(new_theme)
+
     def run(self):
+        self.show_frame("ContentView")
         self.mainloop()

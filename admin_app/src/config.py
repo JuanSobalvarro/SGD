@@ -23,4 +23,4 @@ class Config(object):
     # Load custom font
     CUSTOM_FONTS_PATH = os.path.join(os.path.dirname(__file__), "fonts", "")
 
-    DEBUG = False
+    DEBUG = True
