@@ -19,8 +19,10 @@ class RenderContents:
     """
     Manages all related to rendering contents.
     """
-    def __init__(self, parent, contentFrame: ctk.CTkFrame) -> None:
+    def __init__(self, parent, contentFrame: ctk.CTkFrame, navigationButtons: dict[str, ctk.CTkButton]) -> None:
         self.parent = parent
+
+        self._buttonsContent = navigationButtons
 
         self._content_frame = contentFrame
 
@@ -46,6 +48,13 @@ class RenderContents:
         self._current_content = self._contents[content_name]
         self._current_content.showContent()
 
+        # Update button colors
+        for button_name, button in self._buttonsContent.items():
+            if button_name == content_name:
+                button.configure(fg_color=("#96ff8e", "#016715"))
+            else:
+                button.configure(fg_color="transparent")
+
     def _removeContent(self):
         if self._current_content is not None:
             self._current_content.hideContent()
@@ -58,6 +67,9 @@ class ContentView(BaseView):
         self.borderProperties("#9900FF", 1)
 
         self.navBarFrame: ctk.CTkFrame
+        self.navBar: NavigationBar
+
+        self.navButtons: dict[str, ctk.CTkButton]
 
     def _create_widgets(self):
 
@@ -81,6 +93,14 @@ class ContentView(BaseView):
                                     self.app)
         self.navBar.pack(fill="both", expand=True)
 
+        self.navButtons = {
+            "HomeContent": self.navBar.homeButton,
+            "PlayersContent": self.navBar.playersButton,
+            "TeamsContent": self.navBar.teamsButton,
+            "EventsContent": self.navBar.eventsButton,
+            "LeaderboardContent": self.navBar.leaderboardButton,
+        }
+
         # from base view always initialize
         self.content_frame = ctk.CTkFrame(self.mainFrame,
                                           fg_color="transparent",
@@ -90,9 +110,9 @@ class ContentView(BaseView):
 
         self._setCallbacksButtons()
 
-        self.render_contents = RenderContents(self.mainFrame, self.content_frame)
-        self.render_contents.show("HomeContent")
-        debug_print_widget_hierarchy(self.app)
+        self.render_contents = RenderContents(self.mainFrame, self.content_frame, self.navButtons)
+        self.render_contents.show(Config.CONTENT_VIEW_FIRST_CONTENT)
+        # debug_print_widget_hierarchy(self.app)
 
     def _setCallbacksButtons(self):
         self.navBar.homeButton.configure(command=lambda: self.render_contents.show("HomeContent"))

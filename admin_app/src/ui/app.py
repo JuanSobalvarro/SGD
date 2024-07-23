@@ -95,6 +95,6 @@ class App(ctk.CTk):
         ctk.set_appearance_mode(new_theme)
 
     def run(self):
-        self.showView("ContentView")
+        self.showView(Config.APP_FIRST_VIEW)
         debug_print_widget_hierarchy(self)
         self.mainloop()

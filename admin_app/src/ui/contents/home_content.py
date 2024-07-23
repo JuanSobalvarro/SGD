@@ -15,9 +15,8 @@ class HomeContent(BaseContent):
         self.border_properties("#0000FF", 1)
 
     def createContent(self):
-        # Always create main frame before adding widgets
-        self.create_main_frame()
-
+        # Always call pack to parent
+        self.pack_to_parent()
         self.createCalendar()
 
     def createCalendar(self):
@@ -36,7 +35,7 @@ class HomeContent(BaseContent):
 
     def showContent(self):
         debug_print("Showing Home Content")
-        debug_print_widget_hierarchy(self)
+        # debug_print_widget_hierarchy(self)
         self.createContent()
 
     def hideContent(self):

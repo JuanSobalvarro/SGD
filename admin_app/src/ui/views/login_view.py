@@ -99,7 +99,7 @@ class LoginView(BaseView):
         usernameLabel = ctk.CTkLabel(usernameFrame,
                                      text="Usuario",
                                      font=("Body/Font Family", 16))
-        usernameLabel.grid(row=0, column=0, sticky="w", padx=30, pady=10)
+        usernameLabel.grid(row=0, column=0, sticky="w", padx=30)
         self.usernameEntry = ctk.CTkEntry(usernameFrame,
                                           height=35,
                                           font=("Body/Font Family", 12),
@@ -110,7 +110,7 @@ class LoginView(BaseView):
         password_label = ctk.CTkLabel(passwordFrame,
                                       text="Contraseña",
                                       font=("Body/Font Family", 16))
-        password_label.grid(row=0, column=0, sticky="w", padx=30, pady=10)
+        password_label.grid(row=0, column=0, sticky="w", padx=30)
         self.passwordEntry = ctk.CTkEntry(passwordFrame,
                                           height=35,
                                           font=("Body/Font Family", 12),

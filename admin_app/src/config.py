@@ -16,9 +16,12 @@ class Config(object):
     APP_MIN_HEIGHT = 480
     APP_SPORTS_AVAILABLE = ["Tenis de Mesa", "Fútbol"]
 
+    APP_FIRST_VIEW = "ContentView"
+    CONTENT_VIEW_FIRST_CONTENT = "PlayersContent"
+
     MENUBAR_FONTSIZE = 16
     COLOR_GREEN = "#238937"
-    current_theme = "dark"
+    current_theme = "light"
 
     # Load custom font
     CUSTOM_FONTS_PATH = os.path.join(os.path.dirname(__file__), "fonts", "")
