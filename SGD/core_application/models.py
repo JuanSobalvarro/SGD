@@ -6,6 +6,9 @@ from django.contrib.contenttypes.models import ContentType
 class PlayerInfo(models.Model):
     """
     Player information model, personal information, etc
+    Fields:
+    - name: CharField
+    - email: EmailField
     """
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -33,7 +36,7 @@ class Team(models.Model):
     """
     Team model that collects the base data of a team
     """
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=20, unique=True, null=False)
     stats = models.ForeignKey(TeamStats, on_delete=models.CASCADE)
 
     class Meta:
@@ -75,7 +78,7 @@ class Tournament(models.Model):
     Tournament Model to save the data from any type of competition/tournament
     """
     name = models.CharField(max_length=100)
-    date = models.DateTimeField()
+    date = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
 
     class Meta:

@@ -11,6 +11,9 @@ except ImportError:
 class PlayerInfo(core_models.PlayerInfo):
     """
     Table Tennis Player Info
+    Fields:
+    - name: CharField
+    - email: EmailField
     """
     pass
 
@@ -18,6 +21,13 @@ class PlayerInfo(core_models.PlayerInfo):
 class Record(core_models.Record):
     """
     Table Tennis Record
+    Fields:
+    - wins: int
+    - losses: int
+    - draws: int
+    - attack_efficiency: float
+    - serving_efficiency: float
+    - defense_efficiency: float
     """
     attack_efficiency = models.FloatField(default=0)
     serving_efficiency = models.FloatField(default=0)
@@ -38,15 +48,32 @@ class Player(core_models.Player):
 
 class DuoStats(core_models.TeamStats):
     """
-    Since table tennis Team is Duo
+    Since table tennis Team is Duo.
+    Fields:
+    - wins: int
+    - losses: int
+    - draws: int
+    - average_points_per_game: float
     """
     average_points_per_game = models.FloatField(default=0)
-    games_played = models.IntegerField(default=0)
+
+    def clean(self):
+        if self.average_points_per_game < 0 or self.average_points_per_game > 11:
+            raise ValidationError("Average points per game must be between 0 and 11")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
 
 
 class Duo(core_models.Team):
     """
     Table Tennis Duo
+    Fields:
+    - name: CharField
+    - player1: Player
+    - player2: Player
+    - stats: DuoStats
     """
     player1 = models.ForeignKey(Player, related_name='player1', on_delete=models.CASCADE)
     player2 = models.ForeignKey(Player, related_name='player2', on_delete=models.CASCADE)
@@ -56,6 +83,11 @@ class Duo(core_models.Team):
 class Tournament(core_models.Tournament):
     """
     Table Tennis Tournament
+    Fields:
+    - name: CharField
+    - date: DateTimeField
+    - active: BooleanField
+    - type: TOURNAMENT_TYPE_CHOICES
     """
     SINGLE = 'S'
     DUO = 'D'
@@ -75,15 +107,23 @@ class Tournament(core_models.Tournament):
 class MatchDuoStats(core_models.MatchTeamStats):
     """
     Table Tennis Match Duo Stats
+    Fields:
+    - winner: BooleanField
+    - player1_average_points_per_game: FloatField
+    - player2_average_points_per_game: FloatField
+    - games_played: IntegerField
     """
     player1_average_points_per_game = models.FloatField(default=0)
     player2_average_points_per_game = models.FloatField(default=0)
-    games_played = models.IntegerField(default=0)
 
 
 class MatchSingleStats(core_models.MatchTeamStats):
     """
     Table Tennis Match Single Stats
+    Fields:
+    - winner: BooleanField
+    - average_points_per_game: FloatField
+    - games_played: IntegerField
     """
     average_points_per_game = models.FloatField(default=0)
     games_played = models.IntegerField(default=0)
@@ -92,6 +132,10 @@ class MatchSingleStats(core_models.MatchTeamStats):
 class MatchStats(core_models.MatchStats):
     """
     Table Tennis Match Stats. Not necessarily for Duo, it also works for a single player
+    - content_type_team_1: ContentType(MatchDuoStats | MatchSingleStats)
+    - team_1_stats: MatchDuoStats | MatchSingleStats
+    - content_type_team_2: ContentType(MatchDuoStats | MatchSingleStats)
+    - team_2_stats: MatchDuoStats | MatchSingleStats
     """
     content_type_team_1 = models.ForeignKey(ContentType, on_delete=models.CASCADE,
                                             related_name='team_1_stats_content_type')
@@ -127,6 +171,15 @@ class MatchStats(core_models.MatchStats):
 class Match(core_models.Match):
     """
     Table Tennis Match
+    Fields:
+    - date_time: DateTimeField
+    - is_team: BooleanField
+    - content_type_team_1: ContentType(Player | Duo)
+    - team_1: Player | Duo
+    - content_type_team_2: ContentType(Player | Duo)
+    - team_2: Player | Duo
+    - match_stats: MatchStats
+    - tournament: Tournament
     """
 
     match_stats = models.ForeignKey(MatchStats, on_delete=models.CASCADE)
