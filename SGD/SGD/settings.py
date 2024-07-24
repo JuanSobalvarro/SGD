@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     'core_application',
     'sports.tableTennis.apps.TableTennisConfig',
+    'sports.football.apps.FootballConfig'
 ]
 
 MIDDLEWARE = [
