@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # NEW: Add apps directory to Python file path
 PROJECT_ROOT = os.path.dirname(__file__)
-sys.path.insert(0, os.path.join(PROJECT_ROOT, "sports"))
+sys.path.insert(0, os.path.join(PROJECT_ROOT, "../sports"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -59,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'SGD.urls'
+ROOT_URLCONF = 'SGD_django.urls'
 
 TEMPLATES = [
     {
@@ -139,7 +139,8 @@ MEDIA_ROOT = os.path.join(STATIC_PRODUCTION_DIR, "media")
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "SGD/static"),
-    os.path.join(BASE_DIR, "sports/tableTennis/static")
+    os.path.join(BASE_DIR, "sports/tableTennis/static"),
+    os.path.join(BASE_DIR, "sports/football/static")
 ]
 
 # Default primary key field type

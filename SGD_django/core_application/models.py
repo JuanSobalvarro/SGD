@@ -12,6 +12,7 @@ class PlayerInfo(models.Model):
     """
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
+    date_of_birth = models.DateField(null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -73,13 +74,14 @@ class Player(models.Model):
         return f"{self.info.name}"
 
 
-class Tournament(models.Model):
+class TournamentInfo(models.Model):
     """
     Tournament Model to save the data from any type of competition/tournament
     """
     name = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
+    rounds = models.IntegerField(default=1)
 
     class Meta:
         abstract = True
@@ -92,7 +94,6 @@ class MatchTeamStats(models.Model):
     """
     Collects the data of the team that played a match
     """
-    winner = models.BooleanField(default=False)
 
     class Meta:
         abstract = True
@@ -114,24 +115,18 @@ class Match(models.Model):
     Match model, base to date of match and check if the opponents are a team
     """
     date_time = models.DateTimeField()
-    is_team = models.BooleanField(default=True)
 
-    content_type_team_1 = models.ForeignKey(ContentType, on_delete=models.CASCADE, related_name='team_1_content_type')
-    object_id_team_1 = models.PositiveIntegerField()
-    team_1 = GenericForeignKey('content_type_team_1', 'object_id_team_1')
-
-    content_type_team_2 = models.ForeignKey(ContentType, on_delete=models.CASCADE, related_name='team_2_content_type')
-    object_id_team_2 = models.PositiveIntegerField()
-    team_2 = GenericForeignKey('content_type_team_2', 'object_id_team_2')
+    team_1 = models.ForeignKey(Team, on_delete=models.CASCADE)
+    team_2 = models.ForeignKey(Team, on_delete=models.CASCADE)
 
     match_stats = models.ForeignKey(MatchStats, on_delete=models.CASCADE, null=True, blank=True)
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    tournament_info = models.ForeignKey(TournamentInfo, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
 
     def __str__(self) -> str:
-        return f"{self.tournament.name} {self.team_1.name} {self.team_2.name} {self.date_time}"
+        return f"{self.tournament_info.name} {self.team_1.name} {self.team_2.name} {self.date_time}"
 
 
 class News(models.Model):

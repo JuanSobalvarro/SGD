@@ -80,9 +80,9 @@ class Duo(core_models.Team):
     stats = models.ForeignKey(DuoStats, on_delete=models.CASCADE)
 
 
-class Tournament(core_models.Tournament):
+class TournamentInfo(core_models.TournamentInfo):
     """
-    Table Tennis Tournament
+    Table Tennis TournamentInfo
     Fields:
     - name: CharField
     - date: DateTimeField
@@ -181,9 +181,18 @@ class Match(core_models.Match):
     - match_stats: MatchStats
     - tournament: Tournament
     """
+    is_team = models.BooleanField(default=True)
+
+    content_type_team_1 = models.ForeignKey(ContentType, on_delete=models.CASCADE, related_name='team_1_content_type')
+    object_id_team_1 = models.PositiveIntegerField()
+    team_1 = GenericForeignKey('content_type_team_1', 'object_id_team_1')
+
+    content_type_team_2 = models.ForeignKey(ContentType, on_delete=models.CASCADE, related_name='team_2_content_type')
+    object_id_team_2 = models.PositiveIntegerField()
+    team_2 = GenericForeignKey('content_type_team_2', 'object_id_team_2')
 
     match_stats = models.ForeignKey(MatchStats, on_delete=models.CASCADE)
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    tournament_info = models.ForeignKey(TournamentInfo, on_delete=models.CASCADE)
 
     def clean(self):
         # Ensure that content types match is_team flag
