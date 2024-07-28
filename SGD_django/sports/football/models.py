@@ -1,4 +1,6 @@
+# sports/football/models.py
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 try:
@@ -10,9 +12,9 @@ except ImportError:
 class PlayerInfo(core_models.PlayerInfo):
     """
     Football player info model
-
-    :param name: CharField
-    :param email: EmailField
+    Fields:
+    - name: CharField
+    - email: EmailField
     - date_of_birth: DateField
     """
     pass
@@ -22,10 +24,10 @@ class Record(core_models.Record):
     """
     Football record model
     Fields
-    :param wins: Number of wins
-    :param losses: Number of losses
-    :param draws: Number of draws
-    :param goals: Number of goals
+    - wins: Number of wins
+    - losses: Number of losses
+    - draws: Number of draws
+    - goals: Number of goals
     """
     goals = models.IntegerField(default=0)
 
@@ -80,21 +82,17 @@ class TournamentInfo(core_models.TournamentInfo):
     - name: CharField
     - date: DateField
     - active: BooleanField
-    - type: TOURNAMENT_TYPE_CHOICES
+    - type: TOURNAMENT_TYPE_CHOICES[LEAGUE, CHAMPIONSHIP, DEFAULT_EVENT](L,C,E)
     """
-    LEAGUE = 'L'
-    CHAMPIONSHIP = 'C'
-    DEFAULT_EVENT = 'E'
 
-    TOURNAMENT_TYPE_CHOICES = [
-        (LEAGUE, 'Liga'),
-        (CHAMPIONSHIP, 'Campeonato'),
-        (DEFAULT_EVENT, 'Evento'),
-    ]
+    class TournamentType(models.TextChoices):
+        LEAGUE = 'L', _("Liga")  # another way to write tuples and gettextlazy is _
+        CHAMPIONSHIP = 'C', _("Campeonato")
+        DEFAULT_EVENT = 'E', _("Evento")
 
     type = models.CharField(max_length=1,
-                            choices=TOURNAMENT_TYPE_CHOICES,
-                            default=DEFAULT_EVENT)
+                            choices=TournamentType,
+                            default=TournamentType.DEFAULT_EVENT)
     rounds = models.IntegerField(default=0)
 
 
@@ -102,9 +100,10 @@ class MatchTeamStats(core_models.MatchTeamStats):
     """
     Football match team stats model
     Fields:
-    - winner: BooleanField
+    - team: FK Team
     - goals: IntegerField
     """
+    team = models.ForeignKey(Team, null=False, on_delete=models.CASCADE)
     goals = models.IntegerField(default=0)
 
 
@@ -128,17 +127,22 @@ class Match(core_models.Match):
     - team_2: Team
     - match_stats: MatchStats
     - tournament_info: TournamentInfo
+    - round: int
+    - winner: Team
+    - parent_match_team1: Match
+    - parent_match_team2: Match
     """
-    team_1 = models.ForeignKey(Team, related_name="matches_as_team1", on_delete=models.CASCADE)
-    team_2 = models.ForeignKey(Team, related_name="matches_as_team2", on_delete=models.CASCADE)
+    # a team is null when the match is not determined yet
+    team_1 = models.ForeignKey(Team, null=True, related_name="matches_as_team1", on_delete=models.CASCADE)
+    team_2 = models.ForeignKey(Team, null=True, related_name="matches_as_team2", on_delete=models.CASCADE)
 
-    match_stats = models.ForeignKey(MatchStats, on_delete=models.CASCADE)
+    match_stats = models.ForeignKey(MatchStats, null=True, on_delete=models.CASCADE)
     tournament_info = models.ForeignKey(TournamentInfo, on_delete=models.CASCADE)
     round = models.IntegerField(default=0)
 
-    winner = models.ForeignKey(Team, on_delete=models.CASCADE)
+    winner = models.ForeignKey(Team, null=True, blank=True, default=None, on_delete=models.CASCADE)
 
-    parent_match_team1 = models.ForeignKey('self', related_name="child_matches_team1", on_delete=models.CASCADE)
-    parent_match_team2 = models.ForeignKey('self', related_name="child_matches_team2", on_delete=models.CASCADE)
+    parent_match_team1 = models.ForeignKey('self', null=True, related_name="child_matches_team1", on_delete=models.CASCADE)
+    parent_match_team2 = models.ForeignKey('self', null=True, related_name="child_matches_team2", on_delete=models.CASCADE)
 
 
