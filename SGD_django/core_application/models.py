@@ -126,7 +126,10 @@ class Match(models.Model):
         abstract = True
 
     def __str__(self) -> str:
-        return f"{self.tournament_info.name} {self.team_1.name} {self.team_2.name} {self.date_time}"
+        if self.team_1 is None or self.team_2 is None:
+            return "Match is not determined yet"
+        return (f"{"" if self.tournament_info is None else self.tournament_info.name} "
+                f"{self.team_1.name} {self.team_2.name} {self.date_time}")
 
 
 class News(models.Model):
