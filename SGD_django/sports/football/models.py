@@ -113,9 +113,13 @@ class MatchStats(core_models.MatchStats):
     Fields:
     - team_1_stats: MatchTeamStats
     - team_2_stats: MatchTeamStats
+    - winner: Team
+    - is_draw: BooleanField
     """
     team_1_stats = models.ForeignKey(MatchTeamStats, related_name="stats_team1", on_delete=models.CASCADE)
     team_2_stats = models.ForeignKey(MatchTeamStats, related_name="stats_team2", on_delete=models.CASCADE)
+    winner = models.ForeignKey(Team, null=True, default=None, on_delete=models.CASCADE)
+    is_draw = models.BooleanField(default=False)
 
 
 class Match(core_models.Match):
@@ -128,9 +132,6 @@ class Match(core_models.Match):
     - match_stats: MatchStats
     - tournament_info: TournamentInfo
     - round: int
-    - winner: Team
-    - parent_match_team1: Match
-    - parent_match_team2: Match
     """
     # a team is null when the match is not determined yet
     team_1 = models.ForeignKey(Team, null=True, related_name="matches_as_team1", on_delete=models.CASCADE)
@@ -140,9 +141,16 @@ class Match(core_models.Match):
     tournament_info = models.ForeignKey(TournamentInfo, on_delete=models.CASCADE)
     round = models.IntegerField(default=0)
 
-    winner = models.ForeignKey(Team, null=True, blank=True, default=None, on_delete=models.CASCADE)
 
-    parent_match_team1 = models.ForeignKey('self', null=True, related_name="child_matches_team1", on_delete=models.CASCADE)
-    parent_match_team2 = models.ForeignKey('self', null=True, related_name="child_matches_team2", on_delete=models.CASCADE)
-
+class MatchParenting(models.Model):
+    """
+    Football match parenting model
+    Fields:
+    - match: Match
+    - parent_match: Match
+    - team_number: Number of team SmallIntegerField
+    """
+    match = models.ForeignKey(Match, related_name="match_parenting",on_delete=models.CASCADE)
+    parent_match = models.ForeignKey(Match, null=False, related_name="parent_of_match", on_delete=models.CASCADE)
+    team_number = models.SmallIntegerField(null=False, default=1)
 

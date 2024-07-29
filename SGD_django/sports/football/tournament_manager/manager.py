@@ -3,7 +3,15 @@ from django.db import models
 from datetime import datetime
 import math
 import random
-from ..models import TournamentInfo, Match, Team, MatchStats, TeamStats, MatchTeamStats
+from ..models import (
+    TournamentInfo,
+    Match,
+    Team,
+    MatchStats,
+    TeamStats,
+    MatchTeamStats,
+    MatchParenting,
+)
 
 
 class TournamentManager:
@@ -43,13 +51,13 @@ class TournamentManager:
                 current_round_teams.remove(random_team)
 
             for i in range(0, len(current_round_teams), 2):
-                matchstats = TournamentManager.createMatchStats(current_round_teams[i],
-                                                                current_round_teams[i + 1])
+
                 match = Match(
                     date_time=datetime(year=2024, month=1, day=1),
                     team_1=current_round_teams[i],
                     team_2=current_round_teams[i + 1],
-                    match_stats=matchstats,
+                    match_stats=TournamentManager.createMatchStats(current_round_teams[i],
+                                                                   current_round_teams[i + 1]),
                     tournament_info=tournament,
                     round=round_number,
                 )
@@ -63,10 +71,18 @@ class TournamentManager:
             if round_number > 1:
                 for i in range(0, len(round_matches)):
                     parent_match_index = 2 * i
-                    round_matches[i].parent_match_team1 = prev_round_matches[parent_match_index]
+                    if parent_match_index < len(prev_round_matches):
+                        MatchParenting.objects.create(
+                            match=round_matches[i],
+                            parent_match=prev_round_matches[parent_match_index],
+                            team_number=1
+                        )
                     if parent_match_index + 1 < len(prev_round_matches):
-                        round_matches[i].parent_match_team2 = prev_round_matches[parent_match_index + 1]
-                    round_matches[i].save()
+                        MatchParenting.objects.create(
+                            match=round_matches[i],
+                            parent_match=prev_round_matches[parent_match_index + 1],
+                            team_number=2
+                        )
 
             prev_round_matches = round_matches
             current_round_teams = next_round_teams
@@ -78,6 +94,9 @@ class TournamentManager:
         """
         From a given tournament looks for all the matches in that tournament
         and returns a dictionary of the round and list of matches.
+
+        :param TournamentInfo tournament: The tournament which bracket will be generated
+        :return: A dictionary of the round and list of matches.
         """
         matches = Match.objects.filter(tournament_info=tournament).order_by('round', 'id')
 
@@ -91,14 +110,16 @@ class TournamentManager:
 
     @staticmethod
     def createMatchStats(team1: Team, team2: Team) -> MatchStats:
-        if team1 and team2:
-            team1_match_stats = MatchTeamStats(team=team1, goals=1)
+        if team1 is not None and team2 is not None:
+            team1_match_stats = MatchTeamStats(team=team1, goals=0)
             team1_match_stats.save()
-            team2_match_stats = MatchTeamStats(team=team2, goals=2)
+            team2_match_stats = MatchTeamStats(team=team2, goals=0)
             team2_match_stats.save()
 
             match_stats = MatchStats(team_1_stats=team1_match_stats,
-                                     team_2_stats=team2_match_stats)
+                                     team_2_stats=team2_match_stats,
+                                     winner=None,
+                                     is_draw=False)
             match_stats.save()
 
             return match_stats
@@ -108,16 +129,52 @@ class TournamentManager:
     def printBracket(tournament: TournamentInfo):
         """
         Prints the bracket for the given tournament in a readable format.
+
+        :param TournamentInfo tournament: The tournament to be printed.
         """
         bracket = TournamentManager.getBracket(tournament)
-        match_id_to_team = {}
 
         for round_number, matches in bracket.items():
             print(f"Round {round_number}:")
             for match in matches:
-                team_1 = match.team_1.name if match.team_1 else f"Winner of match {match.parent_match_team1.id}" if match.parent_match_team1 else "TBD"
-                team_2 = match.team_2.name if match.team_2 else f"Winner of match {match.parent_match_team2.id}" if match.parent_match_team2 else "TBD"
-                print(f"  Match {match.id}: {team_1} vs {team_2}")
-                match_id_to_team[match.id] = match
+                team_1_name = match.team_1.name if match.team_1 else TournamentManager.getParentMatchTeam(match, 1)
+                team_2_name = match.team_2.name if match.team_2 else TournamentManager.getParentMatchTeam(match, 2)
+                print(f"  Match {match.id}: {team_1_name} vs {team_2_name}")
             print()
+
+    @staticmethod
+    def getParentMatchTeam(match: Match, team_number: int) -> str:
+        """
+        Retrieves the team from the parent match that is supposed to occupy a position in the current match.
+
+        :param Match match: The current match.
+        :param int team_number: The team position (1 or 2).
+        :return: The description of the team (either the actual team name or a placeholder).
+        """
+        try:
+            parent_match_relationship = MatchParenting.objects.get(match=match, team_number=team_number)
+            parent_match = parent_match_relationship.parent_match
+
+            if not parent_match.match_stats:
+                return "Parent match stats not available"
+
+            if parent_match.match_stats.winner:
+                return parent_match.match_stats.winner.name
+            return f"Winner of match {parent_match.id}"
+        except MatchParenting.DoesNotExist:
+            return "TBD"
+
+    @staticmethod
+    def updateMatchWinner(match: Match, winning_team: Team):
+        """
+        Updates the tournament with the winner of a match.
+
+        :param Match match: The match that has concluded.
+        :param Team winning_team: The team that won the match.
+        """
+        if winning_team is not match.team_1 or winning_team is not match.team_2:
+            ValueError("The winner team must be a team of the match")
+
+        match.match_stats.winner = winning_team
+        match.save()
 

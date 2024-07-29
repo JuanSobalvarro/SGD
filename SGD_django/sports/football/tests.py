@@ -3,7 +3,18 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from .models import PlayerInfo, Record, TeamStats, Team, Player, TournamentInfo, MatchTeamStats, MatchStats, Match
+from .models import (
+    PlayerInfo,
+    Record,
+    TeamStats,
+    Team,
+    Player,
+    TournamentInfo,
+    MatchTeamStats,
+    MatchStats,
+    Match,
+    MatchParenting,
+)
 from .tournament_manager.manager import TournamentManager
 from datetime import datetime
 import faker
@@ -97,7 +108,7 @@ class TournamentManagerTestCase(TestCase):
         matches = TournamentManager.createSingleEliminationTournament(self.tournament, self.teams)
         bracket = TournamentManager.getBracket(self.tournament)
 
-        TournamentManager.printBracket(self.tournament)
+        # TournamentManager.printBracket(self.tournament)
 
         # 10 teams
         self.assertTrue(len(bracket) > 0)
@@ -111,6 +122,19 @@ class TournamentManagerTestCase(TestCase):
         self.assertEqual(len(bracket[1]), 5)
         self.assertEqual(len(bracket[2]), 2)
         self.assertEqual(len(bracket[3]), 1)
+
+    def test_match_winners(self):
+        matches = TournamentManager.createSingleEliminationTournament(self.tournament, self.teams)
+
+        print("First bracket")
+        TournamentManager.printBracket(self.tournament)
+
+        TournamentManager.updateMatchWinner(matches[0][0], matches[0][0].team_1)
+        self.assertEqual(matches[0][0].match_stats.winner, matches[0][0].team_1)
+
+        print("Second bracket")
+        TournamentManager.printBracket(self.tournament)
+
 
 
 # class MatchModelTestCase(TestCase):
