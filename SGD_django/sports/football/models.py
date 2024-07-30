@@ -103,7 +103,7 @@ class MatchTeamStats(core_models.MatchTeamStats):
     - team: FK Team
     - goals: IntegerField
     """
-    team = models.ForeignKey(Team, null=False, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, null=True, on_delete=models.CASCADE)
     goals = models.IntegerField(default=0)
 
 
@@ -116,10 +116,24 @@ class MatchStats(core_models.MatchStats):
     - winner: Team
     - is_draw: BooleanField
     """
-    team_1_stats = models.ForeignKey(MatchTeamStats, related_name="stats_team1", on_delete=models.CASCADE)
-    team_2_stats = models.ForeignKey(MatchTeamStats, related_name="stats_team2", on_delete=models.CASCADE)
+    team_1_stats = models.ForeignKey(MatchTeamStats, null=True, related_name="stats_team1", on_delete=models.CASCADE)
+    team_2_stats = models.ForeignKey(MatchTeamStats, null=True, related_name="stats_team2", on_delete=models.CASCADE)
     winner = models.ForeignKey(Team, null=True, default=None, on_delete=models.CASCADE)
     is_draw = models.BooleanField(default=False)
+
+    def createTeamMatchStats(self, team: Team, number: int):
+
+        if number < 1 or number > 2:
+            raise ValidationError("Number of team must be 1 or 2")
+
+        if number == 1:
+            self.team_1_stats = MatchTeamStats(team=team, goals=0)
+            self.team_1_stats.save()
+        elif number == 2:
+            self.team_2_stats = MatchTeamStats(team=team, goals=0)
+            self.team_2_stats.save()
+
+        self.save()
 
 
 class Match(core_models.Match):
@@ -140,6 +154,47 @@ class Match(core_models.Match):
     match_stats = models.ForeignKey(MatchStats, null=True, on_delete=models.CASCADE)
     tournament_info = models.ForeignKey(TournamentInfo, on_delete=models.CASCADE)
     round = models.IntegerField(default=0)
+
+    def addTeam1(self, team: Team):
+        """
+        Add a team 1 to the match vs
+
+        :param team: Team
+        :return: None
+        """
+
+        if team is None:
+            raise ValueError("The team cannot be None")
+
+        self.team_1 = team
+        self.match_stats.createTeamMatchStats(self.team_1, 1)
+        self.save()
+
+    def addTeam2(self, team: Team):
+        """
+        Add a team 2 to the match vs
+
+        :param team: Team
+        :return: None
+        """
+
+        if team is None:
+            raise ValueError("The team cannot be None")
+
+        self.team_2 = team
+        self.match_stats.createTeamMatchStats(self.team_2, 2)
+        self.save()
+
+    def save(self, *args, **kwargs):
+
+        if self.match_stats is None:
+            Exception("Trying to save a match with an empty match_stats object")
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+
+        return f"{self.team_1} vs {self.team_2}. Date: {self.date_time}. Tournament: {self.tournament_info}. Winner: {self.match_stats.winner}"
 
 
 class MatchParenting(models.Model):

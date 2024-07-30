@@ -83,7 +83,7 @@ class PlayerTestCase(TestCase):
 class TournamentManagerTestCase(TestCase):
     def setUp(self):
         number_of_teams = 10
-        self.teams = [self.createTeam(f"Team {i}") for i in range(10)]
+        self.teams = [self.createTeam(f"Team {i}") for i in range(number_of_teams)]
         self.tournament = TournamentInfo(name="Test Tournament", date=datetime.now(), active=True)
         self.tournament.save()
 
@@ -100,9 +100,9 @@ class TournamentManagerTestCase(TestCase):
         self.assertEqual(len(matches), self.tournament.rounds)
         self.assertEqual(self.tournament.rounds, 4)  # 10 teams require 4 rounds
 
-        # Verify the match creation
-        for round_matches in matches:
-            print(round_matches)
+        # # Verify the match creation
+        # for round_matches in matches:
+        #     print(round_matches)
 
     def test_tournamentBracket_view(self):
         matches = TournamentManager.createSingleEliminationTournament(self.tournament, self.teams)
@@ -129,12 +129,16 @@ class TournamentManagerTestCase(TestCase):
         print("First bracket")
         TournamentManager.printBracket(self.tournament)
 
+        # print(Match.objects.all())
+
         TournamentManager.updateMatchWinner(matches[0][0], matches[0][0].team_1)
         self.assertEqual(matches[0][0].match_stats.winner, matches[0][0].team_1)
 
+        # print("=====================AFTER UPDATE=====================")
+        # print(Match.objects.all())
+
         print("Second bracket")
         TournamentManager.printBracket(self.tournament)
-
 
 
 # class MatchModelTestCase(TestCase):

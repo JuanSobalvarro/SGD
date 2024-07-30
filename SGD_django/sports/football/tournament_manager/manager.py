@@ -72,17 +72,15 @@ class TournamentManager:
                 for i in range(0, len(round_matches)):
                     parent_match_index = 2 * i
                     if parent_match_index < len(prev_round_matches):
-                        MatchParenting.objects.create(
-                            match=round_matches[i],
-                            parent_match=prev_round_matches[parent_match_index],
-                            team_number=1
-                        )
+                        parenting = MatchParenting(match=round_matches[i],
+                                                   parent_match=prev_round_matches[parent_match_index],
+                                                   team_number=1)
+                        parenting.save()
                     if parent_match_index + 1 < len(prev_round_matches):
-                        MatchParenting.objects.create(
-                            match=round_matches[i],
-                            parent_match=prev_round_matches[parent_match_index + 1],
-                            team_number=2
-                        )
+                        parenting = MatchParenting(match=round_matches[i],
+                                                   parent_match=prev_round_matches[parent_match_index + 1],
+                                                   team_number=2)
+                        parenting.save()
 
             prev_round_matches = round_matches
             current_round_teams = next_round_teams
@@ -110,20 +108,37 @@ class TournamentManager:
 
     @staticmethod
     def createMatchStats(team1: Team, team2: Team) -> MatchStats:
-        if team1 is not None and team2 is not None:
-            team1_match_stats = MatchTeamStats(team=team1, goals=0)
-            team1_match_stats.save()
-            team2_match_stats = MatchTeamStats(team=team2, goals=0)
-            team2_match_stats.save()
 
-            match_stats = MatchStats(team_1_stats=team1_match_stats,
-                                     team_2_stats=team2_match_stats,
-                                     winner=None,
-                                     is_draw=False)
-            match_stats.save()
+        match_stats = MatchStats(winner=None,
+                                 is_draw=False)
+        match_stats.save()
 
-            return match_stats
-        return None
+        match_stats.createTeamMatchStats(team1, 1)
+        match_stats.createTeamMatchStats(team2, 2)
+
+        return match_stats
+
+    @staticmethod
+    def updateMatchWinner(match: Match, winning_team: Team):
+        """
+        Updates a match winner
+
+        :param Match match: The match to update
+        :param Team winning_team: The team that won the match.
+        """
+        if winning_team is not match.team_1 or winning_team is not match.team_2:
+            ValueError("The winner team must be a team of the match")
+
+        match.match_stats.winner = winning_team
+        match.save()
+
+        # update child match
+        parenting = MatchParenting.objects.get(parent_match=match)
+
+        if parenting.team_number == 1:
+            parenting.match.addTeam1(winning_team)
+        elif parenting.team_number == 2:
+            parenting.match.addTeam2(winning_team)
 
     @staticmethod
     def printBracket(tournament: TournamentInfo):
@@ -164,17 +179,5 @@ class TournamentManager:
         except MatchParenting.DoesNotExist:
             return "TBD"
 
-    @staticmethod
-    def updateMatchWinner(match: Match, winning_team: Team):
-        """
-        Updates the tournament with the winner of a match.
 
-        :param Match match: The match that has concluded.
-        :param Team winning_team: The team that won the match.
-        """
-        if winning_team is not match.team_1 or winning_team is not match.team_2:
-            ValueError("The winner team must be a team of the match")
-
-        match.match_stats.winner = winning_team
-        match.save()
 
