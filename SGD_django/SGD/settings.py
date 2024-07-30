@@ -59,12 +59,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'SGD.urls'
+ROOT_URLCONF = 'core_application.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # 'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -138,7 +138,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(STATIC_PRODUCTION_DIR, "media")
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "SGD/static"),
+    os.path.join(BASE_DIR, "core_application/static"),
     os.path.join(BASE_DIR, "sports/tableTennis/static"),
     os.path.join(BASE_DIR, "sports/football/static")
 ]
