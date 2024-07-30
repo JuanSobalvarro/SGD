@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static '/SGD/SGD/static/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/SGD/SGD/static/styles/style.css' %}">
+    <title>{% block title %}SGD{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-green">
+          <a href="index.html">
+            <img src="/static/img/logo_ulsa.png" alt="Logo" width="170" height="50" class="d-inline-block align-text-top">
+          </a>
+            <div class="container-fluid">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                    <li class="nav-item nav-fontcolor">
+                        <a class="nav-link nav-fontcolor" href="#">Noticias</a>
+                    </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle nav-fontcolor" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Deportes
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </li>
+                  <li class="nav-item nav-fontcolor">
+                    <a class="nav-link nav-fontcolor" href="about.html">¿Quiénes somos?</a>
+                  </li>
+                  <li class="nav-item nav-fontcolor">
+                    <a class="nav-link nav-fontcolor" href="#">Calendario</a>
+                  </li>
+                </ul>
+                <form class="d-flex busqueda" role="search" method="get">
+                  <input name="search" class="form-control me-2 search-bar" type="search" placeholder="Buscar jugador, partido..." aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Buscar</button>
+                </form>
+              </div>
+            </div>
+          </nav>
+    </header>
+    <main>
+      {% block content %} {% endblock %}
+    </main>
+    <footer>
+      <div class="footer-container">
+        <p>&copy;2024 Ice cubes | Todos los derechos reservados.</p>
+        <div class="social-icons">
+            <a href="https://www.instagram.com" target="_blank"><img src="/static/img/instagram.png" alt="Instagram"></a>
+            <a href="https://www.facebook.com" target="_blank"><img src="/static/img/facebook.png" alt="Facebook"></a>
+            <a href="https://github.com/JuanSobalvarro/SGD.git" target="_blank"><img src="/static/img/github.png" alt="GitHub"></a>
+        </div>
+    </div>
+    </footer>
+    <script src="{% static '/SGD/SGD/static/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+</html>
