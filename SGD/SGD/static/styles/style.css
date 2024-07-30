@@ -1,0 +1,145 @@
+body {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  background-color: rgb(19, 62, 40) !important;
+  padding-top: 0;
+  padding-bottom: 0;
+}    
+
+.nav-link.nav-fontcolor.active {
+  color: white;
+}
+
+.nav-fontcolor {
+  color: white;
+}
+
+.nav-fontcolor:hover {
+  color: rgb(152, 224, 187);
+}
+
+.navbar-toggler {
+  background-color: white;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.search-bar{
+  width: 200px;
+}
+
+#scoreboard {
+  display: grid;
+  place-items: center;
+  margin: 5%;
+  height: 400px;
+}
+
+#match-title {
+  color: rgb(28, 87, 57);
+}
+
+.tags {
+  display: flex;
+  justify-content: center;
+  margin: 5px 0;
+}
+
+.tag {
+  display: inline-block;
+  padding: 5px 20px;
+  border-radius: 5px;
+  font-size: 1.2em;
+  color: white;
+  margin: 0 10px;
+}
+
+.amistoso {
+  background-color: #cddc39;
+}
+
+.soccer {
+  background-color: #1976d2;
+}
+
+.equipos {
+  display: flex;
+  color: rgb(28, 87, 57);
+  justify-content: space-between;
+  margin: 20px 0;
+  border-bottom: 3px solid rgb(28, 87, 57);
+  padding-top: 10px;
+  width: 600px;
+}
+
+.equipo {
+  font-size: 1.5em;
+  flex: 1;
+  text-align: center;
+}
+
+.resultado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4em;
+  margin-top: 0px;
+  width: 600px;
+}
+
+.score {
+  margin: 0 110px;
+  font-size: 2em;
+  color: rgb(105, 172, 139);
+}
+
+.dash {
+  font-size: 1em;
+  color: rgb(28, 87, 57);
+}
+
+/* Footer */
+footer {
+  background-color: #1a3d2f;
+  color: white;
+  padding: 20px;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.footer-container p {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.social-icons a {
+  margin: 0 10px;
+}
+
+.social-icons img {
+  width: 30px;
+  height: 30px;
+  filter: invert(1); 
+}
+
+.container-info {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+  height: 100vh;
+}
+

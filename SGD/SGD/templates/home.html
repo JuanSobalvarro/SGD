@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ sport.name }}{% endblock %}
+
+{% block content %}
+<section id="match-scoreboard">
+  <div id="scoreboard" class="container">
+    <h2 id="match-title"><strong>Partido</strong></h2>
+    <div class="tags">
+      <span class="tag amistoso">Amistoso</span>
+        <span class="tag soccer">Soccer</span>
+    </div>
+    <div class="equipos">
+        <div class="equipo">Equipo 1</div>
+        <div class="equipo">Equipo 2</div>
+    </div>
+    <div class="resultado">
+        <span class="score">0</span>
+        <span class="dash">-</span>
+        <span class="score">0</span>
+    </div>
+  </div>
+</section>
+<section>
+  
+</section>
+{% endblock %}
+
