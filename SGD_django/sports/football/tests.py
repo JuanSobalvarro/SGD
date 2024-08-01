@@ -125,139 +125,65 @@ class TournamentManagerTestCase(TestCase):
 
     def test_match_winners(self):
         matches = TournamentManager.createSingleEliminationTournament(self.tournament, self.teams)
+        bracket = TournamentManager.getBracket(self.tournament)
+
+        # tournament bracket should be empty
+        self.assertEqual(bracket[2][0].team_1, None)
+        self.assertEqual(bracket[2][0].team_2, None)
+        self.assertEqual(bracket[2][1].team_1, None)
+        self.assertEqual(bracket[2][1].team_2, None)
+
+        self.assertEqual(bracket[3][0].team_1, None)
+        self.assertEqual(bracket[3][0].team_2, None)
+
+        self.assertEqual(bracket[4][0].team_1, None)
+        self.assertEqual(bracket[4][0].team_2, None)
 
         print("First bracket")
         TournamentManager.printBracket(self.tournament)
 
-        # print(Match.objects.all())
+        # Set winners for the first round
+        TournamentManager.updateMatchWinner(bracket[1][0], bracket[1][0].team_1)
+        TournamentManager.updateMatchWinner(bracket[1][1], bracket[1][1].team_2)
+        TournamentManager.updateMatchWinner(bracket[1][2], bracket[1][2].team_1)
+        TournamentManager.updateMatchWinner(bracket[1][3], bracket[1][3].team_1)
+        TournamentManager.updateMatchWinner(bracket[1][4], bracket[1][4].team_2)
 
-        TournamentManager.updateMatchWinner(matches[0][0], matches[0][0].team_1)
-        self.assertEqual(matches[0][0].match_stats.winner, matches[0][0].team_1)
-
-        # print("=====================AFTER UPDATE=====================")
-        # print(Match.objects.all())
+        # Re-fetch the bracket to ensure the latest data is available
+        bracket = TournamentManager.getBracket(self.tournament)
+        print(bracket)
 
         print("Second bracket")
         TournamentManager.printBracket(self.tournament)
 
+        parenting1 = MatchParenting.objects.get(child_match=bracket[2][0], team_number=1)
+        parenting2 = MatchParenting.objects.get(child_match=bracket[2][0], team_number=2)
+        print(f"Match Ah: {bracket[2][0]}")
+        self.assertEqual(bracket[2][0].team_1, parenting1.parent_match.match_stats.winner)
+        self.assertEqual(bracket[2][0].team_2, parenting2.parent_match.match_stats.winner)
 
-# class MatchModelTestCase(TestCase):
-#     def setUp(self):
-#         self.team1 = Team.objects.create(name="Team 1")
-#         self.team2 = Team.objects.create(name="Team 2")
-#         self.team3 = Team.objects.create(name="Team 3")
-#         self.team4 = Team.objects.create(name="Team 4")
-#         self.tournament = TournamentInfo.objects.create(name="Test Tournament", date=datetime.now(), rounds=2)
-#         self.match_stats1 = MatchStats.objects.create()
-#         self.match_stats2 = MatchStats.objects.create()
-#
-#     def test_match_self_referential_relationship(self):
-#         match1 = Match.objects.create(
-#             date_time=datetime.now(),
-#             team_1=self.team1,
-#             team_2=self.team2,
-#             match_stats=self.match_stats1,
-#             tournament_info=self.tournament,
-#             round=1
-#         )
-#
-#         match2 = Match.objects.create(
-#             date_time=datetime.now(),
-#             team_1=self.team3,
-#             team_2=self.team4,
-#             match_stats=self.match_stats2,
-#             tournament_info=self.tournament,
-#             round=1
-#         )
-#
-#         final_match = Match.objects.create(
-#             date_time=datetime.now(),
-#             team_1=self.team1,
-#             team_2=self.team3,
-#             match_stats=self.match_stats1,
-#             tournament_info=self.tournament,
-#             round=2,
-#             parent_match_team1=match1,
-#             parent_match_team2=match2
-#         )
-#
-#         self.assertEqual(final_match.parent_match_team1, match1)
-#         self.assertEqual(final_match.parent_match_team2, match2)
-#         self.assertEqual(match1.child_matches_team1.first(), final_match)
-#         self.assertEqual(match2.child_matches_team2.first(), final_match)
+        self.assertEqual(bracket[3][0].team_1, None)
+        self.assertEqual(bracket[3][0].team_2, None)
 
+        # Set winners for the second round
+        TournamentManager.updateMatchWinner(bracket[2][0], bracket[2][0].team_1)
+        TournamentManager.updateMatchWinner(bracket[2][1], bracket[2][1].team_2)
 
-# class FootballAPITestCase(APITestCase):
-#     def setUp(self):
-#         self.player_info = PlayerInfo.objects.create(name="John Doe", email="john@example.com", date_of_birth="1990-01-01")
-#         self.record = Record.objects.create(wins=10, losses=5, draws=2, goals=20)
-#         self.team_stats = TeamStats.objects.create(wins=10, losses=5, draws=2, average_goals_per_game=2.5)
-#         self.team = Team.objects.create(name="Team A", stats=self.team_stats)
-#         self.player = Player.objects.create(info=self.player_info, record=self.record, team=self.team)
-#         self.tournament = TournamentInfo.objects.create(name="Tournament 1", date="2023-07-23", type=TournamentInfo.LEAGUE, rounds=3)
-#         self.match_team_stats1 = MatchTeamStats.objects.create(winner=True, goals=3)
-#         self.match_team_stats2 = MatchTeamStats.objects.create(winner=False, goals=1)
-#         self.match_stats = MatchStats.objects.create(team_1_stats=self.match_team_stats1, team_2_stats=self.match_team_stats2)
-#         self.match = Match.objects.create(date_time="2023-07-23T10:00:00Z", team_1=self.team, team_2=self.team, match_stats=self.match_stats, tournament_info=self.tournament, round=1, winner=self.team)
-#
-#     def test_create_player_info(self):
-#         url = reverse('playerinfo-list')
-#         data = {"name": "Jane Doe", "email": "jane@example.com", "date_of_birth": "1995-05-15"}
-#         response = self.client.post(url, data, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#
-#     def test_create_record(self):
-#         url = reverse('record-list')
-#         data = {"wins": 8, "losses": 2, "draws": 1, "goals": 15}
-#         response = self.client.post(url, data, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#
-#     def test_create_team_stats(self):
-#         url = reverse('teamstats-list')
-#         data = {"wins": 5, "losses": 3, "draws": 2, "average_goals_per_game": 1.8}
-#         response = self.client.post(url, data, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#
-#     def test_create_team(self):
-#         url = reverse('team-list')
-#         data = {"name": "Team B", "stats": self.team_stats.id}
-#         response = self.client.post(url, data, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#
-#     def test_create_player(self):
-#         url = reverse('player-list')
-#         data = {"info": self.player_info.id, "record": self.record.id, "team": self.team.id}
-#         response = self.client.post(url, data, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#
-#     def test_create_tournament(self):
-#         url = reverse('tournamentinfo-list')
-#         data = {"name": "Tournament 2", "date": "2024-07-23", "type": TournamentInfo.CHAMPIONSHIP, "rounds": 4}
-#         response = self.client.post(url, data, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#
-#     def test_create_match_team_stats(self):
-#         url = reverse('matchteamstats-list')
-#         data = {"winner": True, "goals": 2}
-#         response = self.client.post(url, data, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#
-#     def test_create_match_stats(self):
-#         url = reverse('matchstats-list')
-#         data = {"team_1_stats": self.match_team_stats1.id, "team_2_stats": self.match_team_stats2.id}
-#         response = self.client.post(url, data, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#
-#     def test_create_match(self):
-#         url = reverse('match-list')
-#         data = {
-#             "date_time": "2024-07-23T10:00:00Z",
-#             "team_1": self.team.id,
-#             "team_2": self.team.id,
-#             "match_stats": self.match_stats.id,
-#             "tournament_info": self.tournament.id,
-#             "round": 1,
-#             "winner": self.team.id
-#         }
-#         response = self.client.post(url, data, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        # Re-fetch the bracket to ensure the latest data is available
+        bracket = TournamentManager.getBracket(self.tournament)
+
+        print("Third bracket")
+        TournamentManager.printBracket(self.tournament)
+
+        # Set winner for the third round
+        TournamentManager.updateMatchWinner(bracket[3][0], bracket[3][0].team_1)
+
+        # Re-fetch the bracket to ensure the latest data is available
+        bracket = TournamentManager.getBracket(self.tournament)
+
+        # Final match should not have "TBD" and should have the winning team from the previous round
+        final_match = bracket[4][0]
+        self.assertIsNotNone(final_match.team_1)
+        self.assertNotEqual(final_match.team_1, "TBD")
+        print(f"Final match: {final_match}")
+
