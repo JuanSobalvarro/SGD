@@ -1,0 +1,60 @@
+{% extends 'core_application/layout.html' %}
+
+{% block title %}Perfil jugador{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row player-profile">
+      <div class="col-xl-6 col-sm-12 col-xs-8 info-player">
+        <div class="row major-player">
+          {{ player.major }}
+        </div>
+        <div class="row name-player">
+          {{ player.name }}
+        </div>
+        <div class="row stats-player">
+          <div class="col-xl-6 wins stats">
+            <div class="row">
+              <div class="col-xl-4 col-sm-4  stats-image">
+                <img src="{%  static 'img/trophy.svg' %}" alt="win">
+              </div>
+              <div class="col-xl-8 col-sm-8 stats-text">
+                <div class="row">
+                  Ganadas
+                </div>
+                <div class="row stats-number">
+                  {{ record.wins }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-md-4 losses stats">
+            <div class="row">
+              <div class="col-xl-4 stats-image">
+                <img src="{%  static 'img/losses.svg' %}" alt="win">
+              </div>
+              <div class="col-xl-8 stats-text">
+                <div class="row">
+                  Perdidas
+                </div>
+                <div class="row stats-number">
+                  {{ record.losses }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-5 col-sm-10 col-xs-4 player">
+        <div class="row image-player">
+          <img src="{{ player.image.url }}" alt="Imagen de {{ player.name }}">
+        </div>
+        <div class="row player-sport">
+          {{ player.sport }}
+        </div> 
+      </div>
+    </div>
+</div>
+{% endblock %}
+      
+    

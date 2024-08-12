@@ -1,5 +1,14 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 body {
   font-family: 'Roboto Condensed', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Navbar */
@@ -7,6 +16,7 @@ body {
   background-color: rgb(19, 62, 40) !important;
   padding-top: 0;
   padding-bottom: 0;
+  width: 100%;
 }    
 
 .nav-link.nav-fontcolor.active {
@@ -31,103 +41,27 @@ body {
   width: 200px;
 }
 
-#scoreboard {
-  display: grid;
-  place-items: center;
-  margin: 5%;
-  height: 400px;
-}
-
-#match-title {
-  color: rgb(28, 87, 57);
-}
-
-.tags {
-  display: flex;
-  justify-content: center;
-  margin: 5px 0;
-}
-
-.tag {
-  display: inline-block;
-  padding: 5px 20px;
-  border-radius: 5px;
-  font-size: 1.2em;
-  color: white;
-  margin: 0 10px;
-}
-
-.amistoso {
-  background-color: #cddc39;
-}
-
-.soccer {
-  background-color: #1976d2;
-}
-
-.equipos {
-  display: flex;
-  color: rgb(28, 87, 57);
-  justify-content: space-between;
-  margin: 20px 0;
-  border-bottom: 3px solid rgb(28, 87, 57);
-  padding-top: 10px;
-  width: 600px;
-}
-
-.equipo {
-  font-size: 1.5em;
-  flex: 1;
-  text-align: center;
-}
-
-.resultado {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 4em;
-  margin-top: 0px;
-  width: 600px;
-}
-
-.score {
-  margin: 0 110px;
-  font-size: 2em;
-  color: rgb(105, 172, 139);
-}
-
-.dash {
-  font-size: 1em;
-  color: rgb(28, 87, 57);
-}
-
 /* Footer */
-footer {
-  background-color: #1a3d2f;
+
+.footer-content {
+  position: relative;
+  background-color: rgb(52, 51, 56);
   color: white;
-  padding: 20px;
-  position: fixed;
+  padding: 10px 0;
   width: 100%;
-  bottom: 0;
+  font-size: 15px;
+}
+
+.line {
+  border-bottom: 1px solid white;
+  margin: 10px 0;
+}
+
+.social-icons {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-}
-
-.footer-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.footer-container p {
-  margin: 0;
-  padding-left: 20px;
-}
-
-.social-icons a {
-  margin: 0 10px;
+  gap: 15px;
 }
 
 .social-icons img {
@@ -136,10 +70,141 @@ footer {
   filter: invert(1); 
 }
 
-.container-info {
+footer {
+  position: relative;
+  width: 100%;
+  background-color: rgb(52, 51, 56);
+}
+
+/* <<<<<<<<<<<<<<<<<<<<< Player style >>>>>>>>>>>>>> */
+.info-player {
+  height: 300px;
   display: flex;
   justify-content: center;
-  padding: 40px;
-  height: 100vh;
+  align-items: center;
+  flex-direction: column;
+  margin: 10px;
+  margin-top: 50px;
 }
+
+.name-player{
+  font-size: 50px;
+  color: rgb(106, 106, 106);
+  font-weight: bold;
+}
+
+.major-player{
+  font-size: 20px;
+  font-weight: lighter;
+}
+
+
+.stats-player{
+  height: 60px;
+  width: 320px;
+  justify-content: center;
+}
+
+.stats {
+  border-radius: 8px;
+  width: 150px;
+  height: 50px;
+  margin: auto;
+  text-align: center;
+}
+
+.stats-number {
+  font-size: 100%;
+  font-weight: bold;
+  color: white;
+}
+
+.wins {
+  background-color: rgb(20, 164, 90);
+  
+}
+
+.losses {
+  background-color: rgb(232, 64, 64);
+}
+
+.stats-image img{
+  margin-top: 5px;
+  height: 30px;
+  width: 100%;
+}
+
+.player {
+  height: 450px;
+  position: relative;
+}
+
+.image-player {
+  width: 100%;
+  height: auto;
+  margin: 10px;
+}
+
+.player-sport {
+  background-color: rgba(19, 62, 40, 0.9);
+  z-index: 1000;
+  position: absolute;
+  height: 40px;
+  width: 200px;
+  font-size: 30px;
+  bottom: 30px;
+  right: 10px;
+  color: white;
+}
+
+/* <<<<<<<<<<<<<<<<<<<<< Search results style >>>>>>>>>>>>>> */
+
+#search-filters {
+  display: grid;
+  place-items: center;
+  margin-top: 20px;
+  width: 500px;
+}
+
+@media (max-width: 768px) {
+  #search-filters {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+.btn-filters {
+  width: 100%;
+}
+
+.filter {
+  margin: 5px;
+  border-radius: 20px;
+}
+
+#not_found_message {
+  display:grid;
+  margin-top: 25px;
+  place-items: center;
+}
+
+/* <<<<<<<<<<<<<<<<<<<<< Card's style >>>>>>>>>>>>>> */
+.card {
+  margin: 10px;
+  margin-bottom: 20px;
+}
+
+.card-button{
+  background-color: rgb(36, 212, 121);
+  border-radius: 20px;
+  border: oldlace;
+}
+
+.card-img-top {
+  height: 150px;
+  width: 100%;
+  object-fit: cover;
+}
+
+
 
