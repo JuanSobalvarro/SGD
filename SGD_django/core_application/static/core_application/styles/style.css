@@ -1,0 +1,210 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: 'Roboto Condensed', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+  background-color: rgb(19, 62, 40) !important;
+  padding-top: 0;
+  padding-bottom: 0;
+  width: 100%;
+}    
+
+.nav-link.nav-fontcolor.active {
+  color: white;
+}
+
+.nav-fontcolor {
+  color: white;
+}
+
+.nav-fontcolor:hover {
+  color: rgb(152, 224, 187);
+}
+
+.navbar-toggler {
+  background-color: white;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.search-bar{
+  width: 200px;
+}
+
+/* Footer */
+
+.footer-content {
+  position: relative;
+  background-color: rgb(52, 51, 56);
+  color: white;
+  padding: 10px 0;
+  width: 100%;
+  font-size: 15px;
+}
+
+.line {
+  border-bottom: 1px solid white;
+  margin: 10px 0;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.social-icons img {
+  width: 30px;
+  height: 30px;
+  filter: invert(1); 
+}
+
+footer {
+  position: relative;
+  width: 100%;
+  background-color: rgb(52, 51, 56);
+}
+
+/* <<<<<<<<<<<<<<<<<<<<< Player style >>>>>>>>>>>>>> */
+.info-player {
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 10px;
+  margin-top: 50px;
+}
+
+.name-player{
+  font-size: 50px;
+  color: rgb(106, 106, 106);
+  font-weight: bold;
+}
+
+.major-player{
+  font-size: 20px;
+  font-weight: lighter;
+}
+
+
+.stats-player{
+  height: 60px;
+  width: 320px;
+  justify-content: center;
+}
+
+.stats {
+  border-radius: 8px;
+  width: 150px;
+  height: 50px;
+  margin: auto;
+  text-align: center;
+}
+
+.stats-number {
+  font-size: 100%;
+  font-weight: bold;
+  color: white;
+}
+
+.wins {
+  background-color: rgb(20, 164, 90);
+  
+}
+
+.losses {
+  background-color: rgb(232, 64, 64);
+}
+
+.stats-image img{
+  margin-top: 5px;
+  height: 30px;
+  width: 100%;
+}
+
+.player {
+  height: 450px;
+  position: relative;
+}
+
+.image-player {
+  width: 100%;
+  height: auto;
+  margin: 10px;
+}
+
+.player-sport {
+  background-color: rgba(19, 62, 40, 0.9);
+  z-index: 1000;
+  position: absolute;
+  height: 40px;
+  width: 200px;
+  font-size: 30px;
+  bottom: 30px;
+  right: 10px;
+  color: white;
+}
+
+/* <<<<<<<<<<<<<<<<<<<<< Search results style >>>>>>>>>>>>>> */
+
+#search-filters {
+  display: grid;
+  place-items: center;
+  margin-top: 20px;
+  width: 500px;
+}
+
+@media (max-width: 768px) {
+  #search-filters {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+.btn-filters {
+  width: 100%;
+}
+
+.filter {
+  margin: 5px;
+  border-radius: 20px;
+}
+
+#not_found_message {
+  display:grid;
+  margin-top: 25px;
+  place-items: center;
+}
+
+/* <<<<<<<<<<<<<<<<<<<<< Card's style >>>>>>>>>>>>>> */
+.card {
+  margin: 10px;
+  margin-bottom: 20px;
+}
+
+.card-button{
+  background-color: rgb(36, 212, 121);
+  border-radius: 20px;
+  border: oldlace;
+}
+
+.card-img-top {
+  height: 150px;
+  width: 100%;
+  object-fit: cover;
+}
+
+
+

@@ -1,0 +1,20 @@
+{% extends 'core_application/layout.html' %}
+
+{% block content %}
+
+<div id="search-filters" class="container search-filters">
+    <div id="filters" class="row btn-filters">
+      <button id="all" class="btn btn-outline-success col filter active" > Mostrar todo</button>
+      <button id="player" class="btn btn-outline-success col filter"> Jugadores</button>
+      <button id="team" class="btn btn-outline-success col filter"> Equipos </button>
+      <button id="tournament" class="btn btn-outline-success col filter"> Torneos </button>
+    </div>     
+</div>
+
+<div class="container mt-4">
+    <div id="results-container" class="row">
+    </div>
+</div>
+
+{% endblock %}
+

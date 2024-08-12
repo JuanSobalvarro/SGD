@@ -103,7 +103,7 @@ class MatchTeamStats(core_models.MatchTeamStats):
     - team: FK Team
     - goals: IntegerField
     """
-    team = models.ForeignKey(Team, null=False, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, null=True, on_delete=models.CASCADE)
     goals = models.IntegerField(default=0)
 
 
@@ -115,11 +115,53 @@ class MatchStats(core_models.MatchStats):
     - team_2_stats: MatchTeamStats
     - winner: Team
     - is_draw: BooleanField
+    - is_finished: BooleanField
     """
-    team_1_stats = models.ForeignKey(MatchTeamStats, related_name="stats_team1", on_delete=models.CASCADE)
-    team_2_stats = models.ForeignKey(MatchTeamStats, related_name="stats_team2", on_delete=models.CASCADE)
+    team_1_stats = models.ForeignKey(MatchTeamStats, null=True, related_name="stats_team1", on_delete=models.CASCADE)
+    team_2_stats = models.ForeignKey(MatchTeamStats, null=True, related_name="stats_team2", on_delete=models.CASCADE)
     winner = models.ForeignKey(Team, null=True, default=None, on_delete=models.CASCADE)
     is_draw = models.BooleanField(default=False)
+    is_finished = models.BooleanField(default=False)
+
+    def createTeamMatchStats(self, team: Team, number: int):
+
+        if number < 1 or number > 2:
+            raise ValidationError("Number of team must be 1 or 2")
+
+        if number == 1:
+            self.team_1_stats = MatchTeamStats(team=team, goals=0)
+            self.team_1_stats.save()
+        elif number == 2:
+            self.team_2_stats = MatchTeamStats(team=team, goals=0)
+            self.team_2_stats.save()
+
+        self.save()
+
+    def finishMatch(self, winner: Team, is_draw: bool):
+        """
+        Finishes the match
+        :param winner: Team
+        :param is_draw: BooleanField
+        """
+        if is_draw:
+            self.is_draw = True
+            self.save()
+            return
+
+        if winner is None:
+            raise ValidationError("Winner cannot be None")
+
+        if winner != self.team_1_stats.team or winner != self.team_2_stats.team:
+            raise ValidationError("Winner MUST be one of the teams in the match")
+
+        self.winner = winner
+        self.is_finished = True
+        self.is_draw = False
+        self.save()
+
+    def save(self, *args, **kwargs):
+
+        super().save(*args, **kwargs)
 
 
 class Match(core_models.Match):
@@ -141,6 +183,42 @@ class Match(core_models.Match):
     tournament_info = models.ForeignKey(TournamentInfo, on_delete=models.CASCADE)
     round = models.IntegerField(default=0)
 
+    def addTeam(self, team: Team, team_number: int) -> TeamStats:
+        """
+        Adds a team to the match, creating and returning its stats that should be added to the match_stats
+        :param team: Team
+        :param team_number: int (1 or 2)
+        :return: TeamStats
+        """
+        if team is None:
+            raise ValidationError("Team cannot be None")
+
+        if team_number == 1:
+            self.team_1 = team
+            self.save()
+            return self.match_stats.createTeamMatchStats(team=team, number=team_number)
+        elif team_number == 2:
+            self.team_2 = team
+            self.save()
+            return self.match_stats.createTeamMatchStats(team=team, number=team_number)
+
+        raise ValidationError("Team number must be 1 or 2")
+
+    @property
+    def winner(self) -> Team:
+        return self.match_stats.winner
+
+    def save(self, *args, **kwargs):
+
+        if self.match_stats is None:
+            Exception("Trying to save a match with an empty match_stats object")
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+
+        return f"ID {self.id} {self.team_1} vs {self.team_2}. Date: {self.date_time}. Tournament: {self.tournament_info}. Winner: {self.match_stats.winner}"
+
 
 class MatchParenting(models.Model):
     """
@@ -150,7 +228,9 @@ class MatchParenting(models.Model):
     - parent_match: Match
     - team_number: Number of team SmallIntegerField
     """
-    match = models.ForeignKey(Match, related_name="match_parenting",on_delete=models.CASCADE)
+    child_match = models.ForeignKey(Match, related_name="match_parenting", on_delete=models.CASCADE)
     parent_match = models.ForeignKey(Match, null=False, related_name="parent_of_match", on_delete=models.CASCADE)
     team_number = models.SmallIntegerField(null=False, default=1)
 
+    def __str__(self):
+        return f"Parent: {self.parent_match}. Child: {self.child_match}. Inheriting Team: {self.team_number}"
