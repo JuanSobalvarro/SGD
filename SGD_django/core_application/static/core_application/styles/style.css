@@ -206,5 +206,53 @@ footer {
   object-fit: cover;
 }
 
+/* <<<<<<<<<<<<<<<<<<<<< about's style >>>>>>>>>>>>>> */
+#welcoming {
+  margin-top: 60px;
+  width: 100%;
+  color: rgba(17, 52, 34, 0.9);
+}	
 
+#ttimage{
+  display: grid;
+  place-items: center;
+}
 
+#ttimage img {
+  width: 100%;
+  height: auto;
+  transition: box-shadow 1s, transform 1s;
+
+  background: 
+    no-repeat,
+    center;
+  background-size: cover;
+}
+
+@media (max-width: 576px) {
+  #ttimage img {
+    width: 100%;
+    max-width: 300px; 
+    margin: 0 auto;
+  }
+}
+
+#title-welcoming {
+  font-size: 30px;
+  text-align: center;
+}
+
+#subtitle-welcoming {
+  margin-top: 20px;
+  font-size: 18px;
+  width: 100%;
+  text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+  #subtitle-welcoming {
+    font-size: 18px; 
+    width: 100%; 
+    margin: 10px; 
+  }
+}
