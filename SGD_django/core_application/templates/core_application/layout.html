@@ -11,45 +11,51 @@
 </head>
 <body>
   <header>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-green">
-        <a href="home.html">
-          <img src="{%  static 'core_application/img/logo_ulsa.png' %}" alt="Logo" width="170" height="50" class="d-inline-block align-text-top">
-        </a>
-          <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"  data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
-                  <li class="nav-item nav-fontcolor">
-                      <a class="nav-link nav-fontcolor" href="#">Noticias</a>
-                  </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle nav-fontcolor" href="sport.html" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Deportes
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Ping pong</a></li>
-                    <li><a class="dropdown-item" href="#">Fútbol</a></li>
-                  </ul>
-                </li>
-                <li class="nav-item nav-fontcolor">
-                  <a class="nav-link nav-fontcolor" href="about.html">¿Quiénes somos?</a>
-                </li>
-                <li class="nav-item nav-fontcolor">
-                  <a class="nav-link nav-fontcolor" href="#">Calendario</a>
-                </li>
-                <li class="nav-item nav-fontcolor">
-                  <a class="nav-link nav-fontcolor" href="#">Iniciar Sesión</a>
-                </li>
+    <nav class="container-fluid">
+      <div class="row navbar">  
+        <div class="col-lg-1 col-sm-12">
+          <ul class="nav">
+            <li class="nav-item nav-button">
+              <a class="nav-link" href="#">Inicio</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-10 col-sm-12">
+          <ul class="nav justify-content-center">
+            <li class="nav-item nav-button">
+              <a class="nav-link" >Noticias</a>
+            </li>
+            <li class="nav-item dropdown nav-button">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Deportes
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Ping pong</a></li>
+                <li><a class="dropdown-item" href="#">Fútbol</a></li>
               </ul>
-              <form id="search-bar-input" class="d-flex busqueda" role="search" method="get">
-                <input name="search" id="search-input" class="form-control me-2 search-bar" type="search" placeholder="Buscar jugador, equipo..." aria-label="Search">
-                <button id="search-btn" class="btn btn-outline-success" type="submit">Buscar</button>
-              </form>
-            </div>
-          </div>
-        </nav>
+            </li>
+            <li class="nav-item nav-button">
+              <a class="nav-link" href="about.html">¿Quiénes somos?</a>
+            </li>
+            <li class="nav-item nav-button">
+              <a class="nav-link">Calendario</a>
+            </li>
+            <li class="nav-item nav-button">
+              <a class="nav-link">Iniciar sesión</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-1 col-sm-12">
+          <ul class="nav">
+            <li class="nav-item nav-button">
+              <button class="btn-search">
+                <img src="{% static 'core_application/img/search.png' %}" alt="search">
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>    
   </header>
   <main class="flex-fill">
     {% block content %}{% endblock %}
