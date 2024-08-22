@@ -2,6 +2,169 @@
 
 {% block title %}{{ sport.name }}{% endblock %}
 
+{% load static %}
 {% block content %}
-{% endblock %}
+<section>
+  <div id="carouselExampleCaptions" class="carousel slide">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{% static 'core_application/img/rally/rally1.jpg' %}" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Ingeniería Cibernética Electrónica</h5>
+          <p>Equipo representante en el rally universitario.</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'core_application/img/rally/rally2.jpg' %}" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Ingeniería Mecánica y Energías Renovables</h5>
+          <p>Set de carrera en carreta.</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'core_application/img/rally/rally3.jpg' %}" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Ari :)</h5>
+          <p>El papa de cibernética padreando.</p>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</section>
 
+<section id="upcoming-events" class="container">
+  <div class="row" id="upcoming-events-title">
+    <h2>Eventos de esta semana</h2>
+  </div>
+
+  <!-- Event 1 -->
+  <div class="row event-box" id="event1">
+    <div class="col-lg-4 sportName-event-box" id="event-box1">
+      <h3>Deporte</h3>
+    </div>
+    <div class="col-lg-8">
+      <div class="row competitors">
+        <h4><strong>Competidores:</strong> team 1 vs team 2</h4>
+      </div>
+      <div class="row">
+        <div class="col-lg-4">
+          <h4><strong>Fecha:</strong> 00/00/00</h4>
+        </div>
+        <div class="col-lg-4">
+          <h4><strong>Hora:</strong> 00:00</h4>
+        </div>
+        <div class="col-lg-4">
+          <h4><strong>Lugar:</strong> XXXX</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event 2 -->
+  <div class="row event-box" id="event2">
+    <div class="col-lg-4 sportName-event-box" id="event-box2">
+      <h3>Deporte</h3>
+    </div>
+    <div class="col-lg-8">
+      <div class="row competitors">
+        <h4><strong>Competidores:</strong> team 1 vs team 2</h4>
+      </div>
+      <div class="row">
+        <div class="col-lg-4">
+          <h4><strong>Fecha:</strong> 00/00/00</h4>
+        </div>
+        <div class="col-lg-4">
+          <h4><strong>Hora:</strong> 00:00</h4>
+        </div>
+        <div class="col-lg-4">
+          <h4><strong>Lugar:</strong> XXXX</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event 3 -->
+  <div class="row event-box" id="event3">
+    <div class="col-lg-4 sportName-event-box" id="event-box3">
+      <h3>Deporte</h3>
+    </div>
+    <div class="col-lg-8">
+      <div class="row competitors">
+        <h4><strong>Competidores:</strong> team 1 vs team 2</h4>
+      </div>
+      <div class="row">
+        <div class="col-lg-4">
+          <h4><strong>Fecha:</strong> 00/00/00</h4>
+        </div>
+        <div class="col-lg-4">
+          <h4><strong>Hora:</strong> 00:00</h4>
+        </div>
+        <div class="col-lg-4">
+          <h4><strong>Lugar:</strong> XXXX</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="hot-news" class="container">
+  <div class="row">
+    <h2>Últimas noticias</h2>
+  </div>
+  <div class="row">
+    <!-- Large Image on the Left -->
+    <div class="col-lg-6">
+      <div class="card mb-3" id="img-hotnew-main">
+        <img src="{% static 'core_application/img/rally/rally6.jpg' %}" class="card-img-top" alt="new1">
+        <div class="card-body">
+          <p class="card-text">Título</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Smaller Images on the Right -->
+    <div class="col-lg-6">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card mb-3">
+            <img src="{% static 'core_application/img/rally/rally4.jpg' %}" class="card-img-top" alt="new2">
+            <div class="card-body">
+              <p class="card-text">Título</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card mb-3">
+            <img src="{% static 'core_application/img/rally/rally5.jpg' %}" class="card-img-top" alt="new3">
+            <div class="card-body">
+              <p class="card-text">Título</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card mb-3">
+            <img src="{% static 'core_application/img/rally/rally win 1.jpg' %}" class="card-img-top" alt="new4">
+            <div class="card-body">
+              <p class="card-text">Título</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
