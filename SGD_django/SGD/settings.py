@@ -11,11 +11,16 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import environ
 import os
 import sys
 
+env = environ.Env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env.read_env('../.env')
 
 # NEW: Add apps directory to Python file path
 PROJECT_ROOT = os.path.dirname(__file__)
@@ -25,10 +30,10 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, "../sports"))
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-yy6t!7=%5714#atw6_=yurr3(@3h7!2m&rdkc@0$y^7n*+i0n6'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['127.0.0.1', '.localhost', '0.0.0.0']
 
@@ -85,11 +90,11 @@ WSGI_APPLICATION = 'SGD.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'testing',
-        'USER': 'root',
-        'PASSWORD': 'josephjoestar18',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASS'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
     }
 }
 
@@ -132,7 +137,7 @@ STATIC_PRODUCTION_DIR = os.path.abspath(
                  '..', 'static_production'))
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(STATIC_PRODUCTION_DIR, "static")
+STATIC_ROOT = os.path.join(STATIC_PRODUCTION_DIR)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(STATIC_PRODUCTION_DIR, "media")
